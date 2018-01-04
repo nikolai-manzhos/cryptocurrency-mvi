@@ -5,9 +5,9 @@ import com.defaultapps.cryptocurrency.view.base.ViewState
 
 interface OverviewViewState: ViewState {
 
-    class LoadingState: OverviewViewState
+    class LoadingState : OverviewViewState
 
-    class ErrorState(val throwable: Throwable): OverviewViewState
+    class ErrorState(val throwable: Throwable) : OverviewViewState
 
-    class DataState(val currencyList: List<Currency>): OverviewViewState
+    class DataState(val currencyList: List<Currency>) : OverviewViewState
 }

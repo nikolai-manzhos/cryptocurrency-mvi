@@ -11,7 +11,7 @@ import io.reactivex.Observable
 import kotlinx.android.synthetic.main.controller_overview.view.*
 import javax.inject.Inject
 
-class OverviewControllerImpl: BaseController<OverviewViewState, OverviewController>(), OverviewController {
+class OverviewControllerImpl : BaseController<OverviewViewState, OverviewController>(), OverviewController {
 
     @Inject lateinit var overviewPresenter: OverviewPresenter
     private val overviewAdapter = OverviewAdapter()

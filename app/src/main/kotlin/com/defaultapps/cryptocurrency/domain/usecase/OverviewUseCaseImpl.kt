@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @PerScreen
 class OverviewUseCaseImpl
-@Inject constructor(private val networkRepository: NetworkRepository): BaseUseCase(), OverviewUseCase {
+@Inject constructor(private val networkRepository: NetworkRepository) : BaseUseCase(), OverviewUseCase {
 
     private var overviewBehaviourSubject: BehaviorSubject<OverviewViewState>? = null
 
@@ -30,7 +30,7 @@ class OverviewUseCaseImpl
                     .cast(OverviewViewState::class.java)
                     .startWith(OverviewViewState.LoadingState())
                     .onErrorReturn { OverviewViewState.ErrorState(it) }
-                    .subscribeBy { viewState -> overviewBehaviourSubject?.onNext(viewState) }
+                    .subscribeBy(onNext = {overviewBehaviourSubject!!.onNext(it)})
         }
 
         return overviewBehaviourSubject!!

@@ -9,7 +9,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 
 @PerScreen
-class OverviewPresenterImpl @Inject constructor(private val overviewUseCase: OverviewUseCase):
+class OverviewPresenterImpl @Inject constructor(private val overviewUseCase: OverviewUseCase) :
         BasePresenter<OverviewViewState, OverviewController>(), OverviewPresenter {
 
     override fun bindIntents() {

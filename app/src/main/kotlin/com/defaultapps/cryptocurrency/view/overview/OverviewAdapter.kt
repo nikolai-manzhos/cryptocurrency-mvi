@@ -7,7 +7,7 @@ import com.defaultapps.cryptocurrency.R
 import com.defaultapps.cryptocurrency.data.entity.Currency
 import kotlinx.android.synthetic.main.item_currency.view.*
 
-class OverviewAdapter: RecyclerView.Adapter<CurrencyViewHolder>() {
+class OverviewAdapter : RecyclerView.Adapter<CurrencyViewHolder>() {
 
     private val items = mutableListOf<Currency>()
 

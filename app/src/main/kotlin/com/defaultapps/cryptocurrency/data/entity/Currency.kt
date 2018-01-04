@@ -3,7 +3,6 @@ package com.defaultapps.cryptocurrency.data.entity
 import com.google.gson.annotations.SerializedName
 
 class Currency {
-
     @SerializedName("id")
     var id: String? = null
     @SerializedName("name")
