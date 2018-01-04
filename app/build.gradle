@@ -1,0 +1,61 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "com.defaultapps.cryptocurrency"
+        minSdkVersion 19
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        debug.java.srcDirs += 'src/debug/kotlin'
+        release.java.srcDirs += 'src/release/kotlin'
+    }
+}
+
+dependencies {
+    implementation (
+            "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion",
+            "com.android.support:appcompat-v7:$support",
+            "com.android.support:design:$support",
+            "com.android.support.constraint:constraint-layout:$constraintLayout",
+            //ButterKnife
+            "com.jakewharton:butterknife:$butterKnife",
+            //Dagger 2
+            "com.google.dagger:dagger:$dagger",
+            //RxJava 2
+            "io.reactivex.rxjava2:rxandroid:$rxandroid",
+            "io.reactivex.rxjava2:rxjava:$rxjava",
+            "io.reactivex.rxjava2:rxkotlin:$rxkotlin",
+            //Retrofit 2
+            "com.squareup.retrofit2:retrofit:$retrofit",
+            "com.squareup.retrofit2:converter-gson:$retrofit",
+            "com.squareup.retrofit2:adapter-rxjava2:$retrofit",
+            "com.squareup.okhttp3:logging-interceptor:$okhttpVersion",
+            //Conductor
+            "com.bluelinelabs:conductor:$conductor")
+
+    kapt(
+            "com.jakewharton:butterknife-compiler:$butterKnife",
+            "com.google.dagger:dagger-compiler:$dagger"
+    )
+
+    debugImplementation (
+            //LeakCanary
+            "com.squareup.leakcanary:leakcanary-android:$leakcanary"
+    )
+
+    testImplementation "junit:junit:$junit"
+
+    androidTestImplementation (
+            "com.android.support.test:runner:$runner",
+            "com.android.support.test.espresso:espresso-core:$espresso")
+}
