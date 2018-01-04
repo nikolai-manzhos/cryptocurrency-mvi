@@ -5,9 +5,7 @@ import com.defaultapps.cryptocurrency.domain.base.BaseUseCase
 import com.defaultapps.cryptocurrency.injection.scope.PerScreen
 import com.defaultapps.cryptocurrency.view.overview.OverviewViewState
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
@@ -26,14 +24,12 @@ class OverviewUseCaseImpl
             overviewBehaviourSubject = BehaviorSubject.create()
 
             networkRepository.getAllCryptocurrencies()
-                    .doOnSubscribe { compositeDisposable.add(it) }
                     .toObservable()
+                    .doOnSubscribe { compositeDisposable.add(it) }
                     .map { OverviewViewState.DataState(it) }
                     .cast(OverviewViewState::class.java)
                     .startWith(OverviewViewState.LoadingState())
                     .onErrorReturn { OverviewViewState.ErrorState(it) }
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
                     .subscribeBy { viewState -> overviewBehaviourSubject?.onNext(viewState) }
         }
 
