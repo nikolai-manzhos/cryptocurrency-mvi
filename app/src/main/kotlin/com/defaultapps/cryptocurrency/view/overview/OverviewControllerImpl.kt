@@ -9,6 +9,7 @@ import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewCon
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewPresenter
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.controller_overview.view.*
+import kotlinx.android.synthetic.main.view_progress.view.*
 import javax.inject.Inject
 
 class OverviewControllerImpl : BaseController<OverviewViewState, OverviewController>(), OverviewController {
@@ -32,13 +33,27 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
 
     override fun render(viewState: OverviewViewState) {
         when (viewState) {
-            is OverviewViewState.LoadingState -> Log.d("Overview", "Loading state" )
-            is OverviewViewState.DataState -> {
-                overviewAdapter.setData(viewState.currencyList)
-                Log.d("Overview", "Data state" )
-            }
-            is OverviewViewState.ErrorState -> Log.e("Overview", "Error state", viewState.throwable )
+            is OverviewViewState.LoadingState -> renderLoading()
+            is OverviewViewState.DataState -> renderResult(viewState)
+            is OverviewViewState.ErrorState -> renderError(viewState)
         }
+    }
+
+    private fun renderLoading() {
+        safeView!!.currencyRecycler.visibility = View.GONE
+        safeView!!.loadingContainer.progressBar.visibility = View.VISIBLE
+        Log.d("Overview", "Loading state" )
+    }
+
+    private fun renderResult(viewState: OverviewViewState.DataState) {
+        safeView!!.loadingContainer.progressBar.visibility = View.GONE
+        safeView!!.currencyRecycler.visibility = View.VISIBLE
+        overviewAdapter.setData(viewState.currencyList)
+        Log.d("Overview", "Data state" )
+    }
+
+    private fun renderError(viewState: OverviewViewState.ErrorState) {
+        Log.e("Overview", "Error state", viewState.throwable )
     }
 
     override fun inject() = screenComponent.inject(this)

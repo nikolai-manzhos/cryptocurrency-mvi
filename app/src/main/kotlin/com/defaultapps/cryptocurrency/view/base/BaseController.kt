@@ -13,16 +13,16 @@ import com.bluelinelabs.conductor.Controller
 import com.defaultapps.cryptocurrency.DebugApp
 import com.defaultapps.cryptocurrency.injection.component.ScreenComponent
 
-abstract class BaseController<VS: ViewState, V: MviView<VS>>(args: Bundle? = null) : Controller(args), MviView<VS> {
+abstract class BaseController<in VS: ViewState, in V: MviView<VS>>(args: Bundle? = null) : Controller(args), MviView<VS> {
 
     private var presenter: MviPresenter<VS, V>? = null
     private var navigator: Navigator<VS, V>? = null
 
     protected lateinit var screenComponent: ScreenComponent
-    private set
-    private lateinit var unbinder: Unbinder
-
+        private set
     private var isInjected: Boolean = false
+
+    protected var safeView: View? = null
 
     override fun onContextAvailable(context: Context) {
         if (isInjected) {
@@ -39,7 +39,7 @@ abstract class BaseController<VS: ViewState, V: MviView<VS>>(args: Bundle? = nul
     @Suppress("UNCHECKED_CAST")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val view = inflater.inflate(provideLayout(), container, false)
-        unbinder = ButterKnife.bind(this, view)
+        safeView = view
         presenter?.onAttach(this as V)
         navigator?.onAttach(this as V)
         onViewCreated(view)
@@ -50,7 +50,7 @@ abstract class BaseController<VS: ViewState, V: MviView<VS>>(args: Bundle? = nul
 
     @CallSuper
     override fun onDestroyView(view: View) {
-        unbinder.unbind()
+        safeView = null
     }
 
     @CallSuper
