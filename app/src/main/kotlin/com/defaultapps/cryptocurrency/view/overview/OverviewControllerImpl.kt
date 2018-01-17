@@ -3,12 +3,14 @@ package com.defaultapps.cryptocurrency.view.overview
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
+import android.view.View.*
 import com.defaultapps.cryptocurrency.R
 import com.defaultapps.cryptocurrency.view.base.BaseController
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewController
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewPresenter
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.controller_overview.view.*
+import kotlinx.android.synthetic.main.view_error.view.*
 import kotlinx.android.synthetic.main.view_progress.view.*
 import javax.inject.Inject
 
@@ -40,20 +42,35 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
     }
 
     private fun renderLoading() {
-        safeView!!.currencyRecycler.visibility = View.GONE
-        safeView!!.loadingContainer.progressBar.visibility = View.VISIBLE
+        safeView!!.currencyRecycler.visibility = GONE
+        safeView!!.loadingContainer.progressBar.visibility = VISIBLE
+        hideErrorView()
         Log.d("Overview", "Loading state" )
     }
 
     private fun renderResult(viewState: OverviewViewState.DataState) {
-        safeView!!.loadingContainer.progressBar.visibility = View.GONE
-        safeView!!.currencyRecycler.visibility = View.VISIBLE
+        safeView!!.loadingContainer.progressBar.visibility = GONE
+        safeView!!.currencyRecycler.visibility = VISIBLE
+        hideErrorView()
         overviewAdapter.setData(viewState.currencyList)
         Log.d("Overview", "Data state" )
     }
 
     private fun renderError(viewState: OverviewViewState.ErrorState) {
-        Log.e("Overview", "Error state", viewState.throwable )
+        safeView!!.loadingContainer.progressBar.visibility = GONE
+        safeView!!.currencyRecycler.visibility = GONE
+        safeView!!.errorContainer.visibility = VISIBLE
+        showErrorView()
+        Log.d("Overview", "Error state", viewState.throwable )
+    }
+
+    private fun hideErrorView() {
+        safeView!!.errorContainer.visibility = GONE
+
+    }
+
+    private fun showErrorView() {
+        safeView!!.errorContainer.visibility = VISIBLE
     }
 
     override fun inject() = screenComponent.inject(this)

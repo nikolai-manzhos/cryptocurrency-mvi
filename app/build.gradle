@@ -27,8 +27,6 @@ dependencies {
             "com.android.support:appcompat-v7:$support",
             "com.android.support:design:$support",
             "com.android.support.constraint:constraint-layout:$constraintLayout",
-            //ButterKnife
-            "com.jakewharton:butterknife:$butterKnife",
             //Dagger 2
             "com.google.dagger:dagger:$dagger",
             //RxJava 2
@@ -44,7 +42,6 @@ dependencies {
             "com.bluelinelabs:conductor:$conductor")
 
     kapt(
-            "com.jakewharton:butterknife-compiler:$butterKnife",
             "com.google.dagger:dagger-compiler:$dagger"
     )
 

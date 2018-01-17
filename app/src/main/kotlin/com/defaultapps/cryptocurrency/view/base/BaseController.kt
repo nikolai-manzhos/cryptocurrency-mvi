@@ -7,8 +7,6 @@ import android.support.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import butterknife.ButterKnife
-import butterknife.Unbinder
 import com.bluelinelabs.conductor.Controller
 import com.defaultapps.cryptocurrency.DebugApp
 import com.defaultapps.cryptocurrency.injection.component.ScreenComponent
@@ -50,6 +48,7 @@ abstract class BaseController<in VS: ViewState, in V: MviView<VS>>(args: Bundle?
 
     @CallSuper
     override fun onDestroyView(view: View) {
+        presenter?.onDetach()
         safeView = null
     }
 
