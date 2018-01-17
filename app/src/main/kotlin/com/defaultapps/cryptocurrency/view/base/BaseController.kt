@@ -49,6 +49,7 @@ abstract class BaseController<in VS: ViewState, in V: MviView<VS>>(args: Bundle?
     @CallSuper
     override fun onDestroyView(view: View) {
         presenter?.onDetach()
+        navigator?.onDetach()
         safeView = null
     }
 
