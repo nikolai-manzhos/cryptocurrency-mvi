@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
-import com.defaultapps.cryptocurrency.DebugApp
+import com.defaultapps.cryptocurrency.App
 import com.defaultapps.cryptocurrency.injection.component.ScreenComponent
 
 abstract class BaseController<in VS: ViewState, in V: MviView<VS>>(args: Bundle? = null) : Controller(args), MviView<VS> {
@@ -26,7 +26,7 @@ abstract class BaseController<in VS: ViewState, in V: MviView<VS>>(args: Bundle?
         if (isInjected) {
             return
         }
-        val app = context.applicationContext as DebugApp
+        val app = context.applicationContext as App
         screenComponent = app.applicationComponent.plusScreenComponent()
         inject()
         presenter = providePresenter()

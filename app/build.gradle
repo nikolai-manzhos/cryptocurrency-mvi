@@ -14,6 +14,14 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    buildTypes {
+        release {
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
         debug.java.srcDirs += 'src/debug/kotlin'
