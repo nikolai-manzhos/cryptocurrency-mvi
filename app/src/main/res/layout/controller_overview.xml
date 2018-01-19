@@ -12,9 +12,9 @@
 
     <include
         android:id="@+id/loadingContainer"
-        layout="@layout/view_progress" />
+        layout="@layout/view_progress"/>
 
     <include
         android:id="@+id/errorContainer"
-        layout="@layout/view_error" />
+        layout="@layout/view_error"/>
 </RelativeLayout>

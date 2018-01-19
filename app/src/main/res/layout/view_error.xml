@@ -11,14 +11,14 @@
         android:src="@drawable/ic_no_data"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:contentDescription="TODO" />
+        android:contentDescription="TODO"/>
 
     <TextView
         android:id="@+id/errorTextView"
         android:text="@string/error_message"
         android:textColor="@color/blackPrimary"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/errorButton"
@@ -26,6 +26,6 @@
         android:textColor="@color/blackSecondary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

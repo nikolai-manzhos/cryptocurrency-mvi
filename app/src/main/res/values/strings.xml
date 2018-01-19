@@ -4,4 +4,7 @@
     <!--Error view-->
     <string name="error_message">Ooops, something went wrong</string>
     <string name="error_button">Try Again</string>
+
+    <!--Currency view-->
+    <string name="currency_image_description">Currency image</string>
 </resources>
