@@ -35,14 +35,12 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
         super.onDestroyView(view)
     }
 
-    override fun retryAction(): Observable<Boolean> {
-        return RxView.clicks(safeView!!.errorContainer.errorButton)
-                .doOnSubscribe { viewCompositeDisposable += it }
-                .map { true }
-    }
+    override fun retryAction(): Observable<Boolean> =
+            RxView.clicks(safeView!!.errorContainer.errorButton)
+                    .doOnSubscribe { viewCompositeDisposable += it }
+                    .map { true }
 
-    override fun loadData(): Observable<Boolean>  = Observable.just(true)
-
+    override fun loadData(): Observable<Boolean> = Observable.just(true)
 
     override fun render(viewState: OverviewViewState) {
         when (viewState) {
@@ -56,7 +54,7 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
         safeView!!.currencyRecycler.visibility = GONE
         safeView!!.loadingContainer.progressBar.visibility = VISIBLE
         hideErrorView()
-        Timber.d("Loading state" )
+        Timber.d("Loading state")
     }
 
     private fun renderResult(viewState: OverviewViewState.DataState) {
@@ -64,7 +62,7 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
         safeView!!.currencyRecycler.visibility = VISIBLE
         hideErrorView()
         overviewAdapter.setData(viewState.currencyList)
-        Timber.d("Data state" )
+        Timber.d("Data state")
     }
 
     private fun renderError(viewState: OverviewViewState.ErrorState) {
@@ -72,12 +70,11 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
         safeView!!.currencyRecycler.visibility = GONE
         safeView!!.errorContainer.visibility = VISIBLE
         showErrorView()
-        Timber.d("Error state", viewState.throwable)
+        Timber.d(viewState.throwable)
     }
 
     private fun hideErrorView() {
         safeView!!.errorContainer.visibility = GONE
-
     }
 
     private fun showErrorView() {
