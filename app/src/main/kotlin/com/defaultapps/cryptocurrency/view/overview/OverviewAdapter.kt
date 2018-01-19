@@ -18,7 +18,7 @@ class OverviewAdapter : RecyclerView.Adapter<CurrencyViewHolder>() {
 
     override fun onBindViewHolder(holder: CurrencyViewHolder?, position: Int) {
         val aPosition = holder!!.adapterPosition
-        holder.itemView.currencyName.text = items[aPosition].name
+        holder.itemView.name.text = items[aPosition].name
     }
 
     override fun getItemCount(): Int = items.size
