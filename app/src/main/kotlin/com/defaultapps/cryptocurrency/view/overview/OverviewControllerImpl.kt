@@ -1,7 +1,6 @@
 package com.defaultapps.cryptocurrency.view.overview
 
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.View
 import android.view.View.*
 import com.defaultapps.cryptocurrency.R
@@ -10,8 +9,8 @@ import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewCon
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewPresenter
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.controller_overview.view.*
-import kotlinx.android.synthetic.main.view_error.view.*
 import kotlinx.android.synthetic.main.view_progress.view.*
+import timber.log.Timber
 import javax.inject.Inject
 
 class OverviewControllerImpl : BaseController<OverviewViewState, OverviewController>(), OverviewController {
@@ -45,7 +44,7 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
         safeView!!.currencyRecycler.visibility = GONE
         safeView!!.loadingContainer.progressBar.visibility = VISIBLE
         hideErrorView()
-        Log.d("Overview", "Loading state" )
+        Timber.d("Loading state" )
     }
 
     private fun renderResult(viewState: OverviewViewState.DataState) {
@@ -53,7 +52,7 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
         safeView!!.currencyRecycler.visibility = VISIBLE
         hideErrorView()
         overviewAdapter.setData(viewState.currencyList)
-        Log.d("Overview", "Data state" )
+        Timber.d("Data state" )
     }
 
     private fun renderError(viewState: OverviewViewState.ErrorState) {
@@ -61,7 +60,7 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
         safeView!!.currencyRecycler.visibility = GONE
         safeView!!.errorContainer.visibility = VISIBLE
         showErrorView()
-        Log.d("Overview", "Error state", viewState.throwable )
+        Timber.d("Error state", viewState.throwable )
     }
 
     private fun hideErrorView() {

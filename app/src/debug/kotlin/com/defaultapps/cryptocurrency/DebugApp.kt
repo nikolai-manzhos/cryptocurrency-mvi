@@ -1,6 +1,7 @@
 package com.defaultapps.cryptocurrency
 
 import com.squareup.leakcanary.LeakCanary
+import timber.log.Timber
 
 class DebugApp : App() {
 
@@ -10,5 +11,6 @@ class DebugApp : App() {
             return
         }
         LeakCanary.install(this)
+        Timber.plant(Timber.DebugTree())
     }
 }

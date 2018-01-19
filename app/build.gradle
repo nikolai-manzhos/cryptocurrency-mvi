@@ -39,7 +39,8 @@ dependencies {
             "com.squareup.retrofit2:adapter-rxjava2:$retrofit",
             "com.squareup.okhttp3:logging-interceptor:$okhttpVersion",
             //Conductor
-            "com.bluelinelabs:conductor:$conductor")
+            "com.bluelinelabs:conductor:$conductor",
+            "com.jakewharton.timber:timber:$timber")
 
     kapt(
             "com.google.dagger:dagger-compiler:$dagger"
