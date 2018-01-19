@@ -32,6 +32,7 @@ dependencies {
             //RxJava 2
             "io.reactivex.rxjava2:rxandroid:$rxandroid",
             "io.reactivex.rxjava2:rxjava:$rxjava",
+            "com.jakewharton.rxbinding2:rxbinding:$rxbinding",
             "io.reactivex.rxjava2:rxkotlin:$rxkotlin",
             //Retrofit 2
             "com.squareup.retrofit2:retrofit:$retrofit",

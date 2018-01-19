@@ -30,7 +30,7 @@ class OverviewUseCaseImpl
                     .cast(OverviewViewState::class.java)
                     .startWith(OverviewViewState.LoadingState())
                     .onErrorReturn { OverviewViewState.ErrorState(it) }
-                    .subscribeBy(onNext = {overviewBehaviourSubject!!.onNext(it)})
+                    .subscribeBy(onNext = { overviewBehaviourSubject!!.onNext(it) })
         }
 
         return overviewBehaviourSubject!!

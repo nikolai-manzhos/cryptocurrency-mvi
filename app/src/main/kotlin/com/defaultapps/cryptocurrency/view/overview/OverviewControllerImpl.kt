@@ -7,8 +7,12 @@ import com.defaultapps.cryptocurrency.R
 import com.defaultapps.cryptocurrency.view.base.BaseController
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewController
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewPresenter
+import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.controller_overview.view.*
+import kotlinx.android.synthetic.main.view_error.view.*
 import kotlinx.android.synthetic.main.view_progress.view.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -18,6 +22,8 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
     @Inject lateinit var overviewPresenter: OverviewPresenter
     private val overviewAdapter = OverviewAdapter()
 
+    private val viewCompositeDisposable = CompositeDisposable()
+
     override fun onViewCreated(view: View) {
         view.currencyRecycler.layoutManager = LinearLayoutManager(applicationContext)
         view.currencyRecycler.adapter = overviewAdapter
@@ -25,12 +31,18 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
 
     override fun onDestroyView(view: View) {
         view.currencyRecycler.adapter = null
+        viewCompositeDisposable.clear()
         super.onDestroyView(view)
     }
 
-    override fun loadData(): Observable<Boolean> {
-        return Observable.just(true)
+    override fun retryAction(): Observable<Boolean> {
+        return RxView.clicks(safeView!!.errorContainer.errorButton)
+                .doOnSubscribe { viewCompositeDisposable += it }
+                .map { true }
     }
+
+    override fun loadData(): Observable<Boolean>  = Observable.just(true)
+
 
     override fun render(viewState: OverviewViewState) {
         when (viewState) {
@@ -60,7 +72,7 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
         safeView!!.currencyRecycler.visibility = GONE
         safeView!!.errorContainer.visibility = VISIBLE
         showErrorView()
-        Timber.d("Error state", viewState.throwable )
+        Timber.d("Error state", viewState.throwable)
     }
 
     private fun hideErrorView() {
