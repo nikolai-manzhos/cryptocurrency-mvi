@@ -26,11 +26,6 @@ jobs:
       - run:
           name: Run tests on Release
           command: ./gradlew --no-daemon assembleRelease testReleaseUnitTest lintRelease
-      - run:
-          name: Run Coverage
-          command: |
-                   ./gradlew --no-daemon jacocoTestReport
-                   bash <(curl -s https://codecov.io/bash)
       - store_artifacts:
           path: app/build/reports
           destination: reports
