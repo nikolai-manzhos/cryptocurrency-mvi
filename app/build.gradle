@@ -4,13 +4,13 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion androidCompileSdk
     defaultConfig {
         applicationId "com.defaultapps.cryptocurrency"
-        minSdkVersion 19
-        targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion androidMinSdk
+        targetSdkVersion androidTargetSdk
+        versionCode androidVersionCode
+        versionName androidVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -49,10 +49,14 @@ dependencies {
             "com.squareup.okhttp3:logging-interceptor:$okhttpVersion",
             //Conductor
             "com.bluelinelabs:conductor:$conductor",
-            "com.jakewharton.timber:timber:$timber")
+            //Timber
+            "com.jakewharton.timber:timber:$timber",
+            //Glide
+            "com.github.bumptech.glide:glide:$glide")
 
     kapt(
-            "com.google.dagger:dagger-compiler:$dagger"
+            "com.google.dagger:dagger-compiler:$dagger",
+            "com.github.bumptech.glide:compiler:$glide"
     )
 
     debugImplementation (

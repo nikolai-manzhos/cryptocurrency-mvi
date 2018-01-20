@@ -3,8 +3,10 @@ package com.defaultapps.cryptocurrency.view.overview
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.defaultapps.cryptocurrency.R
 import com.defaultapps.cryptocurrency.data.entity.Currency
+import com.defaultapps.cryptocurrency.utils.Constants
 import kotlinx.android.synthetic.main.item_currency.view.*
 
 class OverviewAdapter : RecyclerView.Adapter<CurrencyViewHolder>() {
@@ -18,7 +20,13 @@ class OverviewAdapter : RecyclerView.Adapter<CurrencyViewHolder>() {
 
     override fun onBindViewHolder(holder: CurrencyViewHolder?, position: Int) {
         val aPosition = holder!!.adapterPosition
-        holder.itemView.name.text = items[aPosition].name
+        val currency = items[aPosition]
+        Glide
+                .with(holder.itemView)
+                .load(Constants.IMAGE_BASE_URL + currency.id + Constants.IMAGE_FORMAT)
+                .into(holder.itemView.image)
+        holder.itemView.name.text = currency.name
+        holder.itemView.priceChange.text = currency.percentChange24h
     }
 
     override fun getItemCount(): Int = items.size
