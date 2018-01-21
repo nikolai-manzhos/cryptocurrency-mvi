@@ -33,7 +33,7 @@ ext {
     youtube = '1.2.1'
     materialPref = '1.0.5'
     materialSearch = '1.4.0'
-    prefs = "2.3"
+    prefs = "2.4"
     expTextView = '0.1.4'
     timber = '4.6.0'
     easybind = '1.1.4'

@@ -5,6 +5,8 @@ import android.app.Application
 import com.defaultapps.cryptocurrency.injection.component.ApplicationComponent
 import com.defaultapps.cryptocurrency.injection.component.DaggerApplicationComponent
 import com.defaultapps.cryptocurrency.injection.module.ApplicationModule
+import com.defaultapps.cryptocurrency.utils.Constants
+import com.defaultapps.preferenceshelper.PreferencesHelper
 
 @SuppressLint("Registered")
 open class App : Application() {
@@ -14,10 +16,18 @@ open class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        applicationComponent = initDaggerAppComponent().build()
+        initPreferencesHelper()
+        applicationComponent = provideDaggerAppComponent().build()
     }
 
-    protected fun initDaggerAppComponent(): DaggerApplicationComponent.Builder {
+    protected fun provideDaggerAppComponent(): DaggerApplicationComponent.Builder {
         return DaggerApplicationComponent.builder()
+                .applicationModule(ApplicationModule(this))
+    }
+
+    private fun initPreferencesHelper() {
+        PreferencesHelper.builder(this)
+                .setName(Constants.PREF_NAME)
+                .build()
     }
 }

@@ -4,5 +4,6 @@
     <dimen name="default_padding_negative">-16dp</dimen>
 
     <!--Currency view-->
+    <dimen name="currency_image">50dp</dimen>
     <dimen name="currency_margin_image">10dp</dimen>
 </resources>

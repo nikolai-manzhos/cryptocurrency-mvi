@@ -18,7 +18,7 @@ class NetworkModule {
     }
 
     private fun provideRetrofit(): Retrofit {
-        val baseUrl = " https://api.coinmarketcap.com/v1/"
+        val baseUrl = "https://api.coinmarketcap.com/v1/"
         return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

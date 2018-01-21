@@ -20,7 +20,7 @@ import javax.inject.Inject
 class OverviewControllerImpl : BaseController<OverviewViewState, OverviewController>(), OverviewController {
 
     @Inject lateinit var overviewPresenter: OverviewPresenter
-    private val overviewAdapter = OverviewAdapter()
+    @Inject lateinit var overviewAdapter: OverviewAdapter
 
     private val viewCompositeDisposable = CompositeDisposable()
 
@@ -61,7 +61,7 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
         safeView!!.loadingContainer.progressBar.visibility = GONE
         safeView!!.currencyRecycler.visibility = VISIBLE
         hideErrorView()
-        overviewAdapter.setData(viewState.currencyList)
+        overviewAdapter.setData(viewState.currencyResponseList)
         Timber.d("Data state")
     }
 
