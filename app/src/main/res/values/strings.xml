@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">Cryptocurrency</string>
 
+    <!--Overview-->
+    <string name="overview_settings">Settings</string>
+
     <!--Error view-->
     <string name="error_message">Ooops, something went wrong</string>
     <string name="error_button">Try Again</string>
 
-    CurrencyResponseency view-->
+    <!--Currency view-->
     <string name="currency_image_description">Currency image</string>
 </resources>

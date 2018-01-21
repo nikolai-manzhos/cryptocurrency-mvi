@@ -27,7 +27,7 @@ abstract class BaseActivity : AppCompatActivity(), ComponentActivity, MviView<Vi
         }
     }
 
-    override fun provideActivity(): BaseActivity = this
+    override fun activity(): BaseActivity = this
 
     override fun provideActivityComponent(): ActivityComponent = activityComponent
 

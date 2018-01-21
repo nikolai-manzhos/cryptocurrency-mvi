@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.defaultapps.cryptocurrency.R
-import com.defaultapps.cryptocurrency.data.entity.CurrencyResponse
 import com.defaultapps.cryptocurrency.domain.model.Currency
 import com.defaultapps.cryptocurrency.injection.scope.PerScreen
 import com.defaultapps.cryptocurrency.utils.Constants
@@ -33,7 +32,6 @@ class OverviewAdapter @Inject constructor(private val resUtils: ResUtils)
                 .into(holder.itemView.image)
         holder.itemView.name.text = currency.name
         holder.itemView.price.text = currency.price
-
 
         if (currency.percentChange24 < 0F) {
             configurePriceChangeView(holder, resUtils.getColor(R.color.red),

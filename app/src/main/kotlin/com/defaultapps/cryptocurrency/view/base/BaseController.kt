@@ -65,7 +65,7 @@ abstract class BaseController<in VS: ViewState, in V: MviView<VS>>(args: Bundle?
 
     open fun provideNavigator(): Navigator<VS, V>? = null
 
-    override fun provideActivity() = activity as BaseActivity
+    override fun activity() = activity as BaseActivity
 
     open fun inject() {}
 }

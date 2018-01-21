@@ -2,7 +2,8 @@ package com.defaultapps.cryptocurrency.view.overview
 
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import com.defaultapps.cryptocurrency.R
 import com.defaultapps.cryptocurrency.view.base.BaseController
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewController
@@ -27,12 +28,17 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
     override fun onViewCreated(view: View) {
         view.currencyRecycler.layoutManager = LinearLayoutManager(applicationContext)
         view.currencyRecycler.adapter = overviewAdapter
+
+        view.toolbar.inflateMenu(R.menu.overview_menu)
+        val menu = view.toolbar.menu
+        menu.findItem(R.id.actionSettings).setOnMenuItemClickListener {
+            return@setOnMenuItemClickListener true
+        }
     }
 
     override fun onDestroyView(view: View) {
-        view.currencyRecycler.adapter = null
-        viewCompositeDisposable.clear()
         super.onDestroyView(view)
+        viewCompositeDisposable.clear()
     }
 
     override fun retryAction(): Observable<Boolean> =

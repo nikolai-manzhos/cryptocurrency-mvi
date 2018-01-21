@@ -1,8 +1,8 @@
 package com.defaultapps.cryptocurrency.view.base
 
 import android.os.Bundle
-import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.Conductor
+import com.bluelinelabs.conductor.Router
 import kotlinx.android.synthetic.main.activity_main.*
 
 
