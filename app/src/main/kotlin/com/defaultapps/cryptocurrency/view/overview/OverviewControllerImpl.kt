@@ -38,6 +38,7 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
 
     override fun onDestroyView(view: View) {
         super.onDestroyView(view)
+        view.currencyRecycler.adapter = null
         viewCompositeDisposable.clear()
     }
 
@@ -57,26 +58,41 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
     }
 
     private fun renderLoading() {
-        safeView!!.currencyRecycler.visibility = GONE
-        safeView!!.loadingContainer.progressBar.visibility = VISIBLE
+        hideContent()
         hideErrorView()
+        showLoading()
         Timber.d("Loading state")
     }
 
     private fun renderResult(viewState: OverviewViewState.DataState) {
-        safeView!!.loadingContainer.progressBar.visibility = GONE
-        safeView!!.currencyRecycler.visibility = VISIBLE
+        hideLoading()
         hideErrorView()
+        showContent()
         overviewAdapter.setData(viewState.currencyResponseList)
         Timber.d("Data state")
     }
 
     private fun renderError(viewState: OverviewViewState.ErrorState) {
-        safeView!!.loadingContainer.progressBar.visibility = GONE
-        safeView!!.currencyRecycler.visibility = GONE
-        safeView!!.errorContainer.visibility = VISIBLE
+        hideLoading()
+        hideContent()
         showErrorView()
         Timber.d(viewState.throwable)
+    }
+
+    private fun hideContent() {
+        safeView!!.currencyRecycler.visibility = GONE
+    }
+
+    private fun showContent() {
+        safeView!!.currencyRecycler.visibility = VISIBLE
+    }
+
+    private fun hideLoading() {
+        safeView!!.loadingContainer.progressBar.visibility = GONE
+    }
+
+    private fun showLoading() {
+        safeView!!.loadingContainer.progressBar.visibility = VISIBLE
     }
 
     private fun hideErrorView() {
