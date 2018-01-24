@@ -42,7 +42,7 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
 
     override fun onDestroyView(view: View) {
         super.onDestroyView(view)
-        cleanup()
+        cleanup(view)
     }
 
     override fun retryAction(): Observable<Boolean> =
@@ -115,7 +115,7 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
         currencyRecycler.adapter = overviewAdapter
     }
 
-    private fun cleanup() {
+    private fun cleanup(view: View) {
         view.currencyRecycler.adapter = null
         viewCompositeDisposable.clear()
     }
