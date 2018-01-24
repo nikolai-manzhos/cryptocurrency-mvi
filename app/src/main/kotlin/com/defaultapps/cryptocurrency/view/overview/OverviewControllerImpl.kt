@@ -4,6 +4,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import com.defaultapps.cryptocurrency.R
 import com.defaultapps.cryptocurrency.view.base.BaseController
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewController
@@ -25,15 +27,15 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
 
     private val viewCompositeDisposable = CompositeDisposable()
 
-    override fun onViewCreated(view: View) {
-        view.currencyRecycler.layoutManager = LinearLayoutManager(applicationContext)
-        view.currencyRecycler.adapter = overviewAdapter
+    override fun inject() = screenComponent.inject(this)
 
-        view.toolbar.inflateMenu(R.menu.overview_menu)
-        val menu = view.toolbar.menu
-        menu.findItem(R.id.actionSettings).setOnMenuItemClickListener {
-            return@setOnMenuItemClickListener true
-        }
+    override fun provideLayout() = R.layout.controller_overview
+
+    override fun providePresenter() = overviewPresenter
+
+    override fun onViewCreated(view: View) {
+        initAdapter(view)
+        initToolbar(view)
     }
 
     override fun onDestroyView(view: View) {
@@ -68,7 +70,7 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
         hideLoading()
         hideErrorView()
         showContent()
-        overviewAdapter.setData(viewState.currencyResponseList)
+        bindContentToView(viewState)
         Timber.d("Data state")
     }
 
@@ -103,10 +105,21 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
         safeView!!.errorContainer.visibility = VISIBLE
     }
 
-    override fun inject() = screenComponent.inject(this)
+    private fun bindContentToView(viewState: OverviewViewState.DataState) {
+        overviewAdapter.setData(viewState.currencyResponseList)
+    }
 
-    override fun provideLayout() = R.layout.controller_overview
+    private fun initAdapter(view: View) {
+        view.currencyRecycler.layoutManager = LinearLayoutManager(applicationContext)
+        view.currencyRecycler.adapter = overviewAdapter
+    }
 
-    override fun providePresenter() = overviewPresenter
+    private fun initToolbar(view: View) {
+        view.toolbar.inflateMenu(R.menu.overview_menu)
+        val menu = view.toolbar.menu
+        menu.findItem(R.id.actionSettings).setOnMenuItemClickListener {
+            return@setOnMenuItemClickListener true
+        }
+    }
 
 }
