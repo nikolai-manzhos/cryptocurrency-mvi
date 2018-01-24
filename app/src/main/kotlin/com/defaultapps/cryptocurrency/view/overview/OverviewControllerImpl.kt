@@ -42,8 +42,7 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
 
     override fun onDestroyView(view: View) {
         super.onDestroyView(view)
-        view.currencyRecycler.adapter = null
-        viewCompositeDisposable.clear()
+        cleanup()
     }
 
     override fun retryAction(): Observable<Boolean> =
@@ -92,11 +91,11 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
     }
 
     private fun hideLoading() {
-        safeView!!.loadingContainer.progressBar.visibility = GONE
+        safeView!!.progressBar.visibility = GONE
     }
 
     private fun showLoading() {
-        safeView!!.loadingContainer.progressBar.visibility = VISIBLE
+        safeView!!.progressBar.visibility = VISIBLE
     }
 
     private fun hideErrorView() {
@@ -114,6 +113,11 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
     private fun initAdapter(currencyRecycler: RecyclerView) {
         currencyRecycler.layoutManager = LinearLayoutManager(applicationContext)
         currencyRecycler.adapter = overviewAdapter
+    }
+
+    private fun cleanup() {
+        view.currencyRecycler.adapter = null
+        viewCompositeDisposable.clear()
     }
 
     private fun initToolbar(toolbar: Toolbar) {

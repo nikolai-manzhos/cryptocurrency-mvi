@@ -21,6 +21,7 @@ abstract class BaseController<in VS: ViewState, in V: MviView<VS>>(args: Bundle?
     private var isInjected: Boolean = false
 
     protected var safeView: View? = null
+        private set
 
     override fun onContextAvailable(context: Context) {
         if (isInjected) {
