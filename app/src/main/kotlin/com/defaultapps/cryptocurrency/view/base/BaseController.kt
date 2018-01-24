@@ -67,5 +67,7 @@ abstract class BaseController<in VS: ViewState, in V: MviView<VS>>(args: Bundle?
 
     override fun activity() = activity as BaseActivity
 
+    override fun render(viewState: VS) {}
+
     open fun inject() {}
 }

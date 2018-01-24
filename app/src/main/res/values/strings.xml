@@ -10,4 +10,7 @@
 
     <!--Currency view-->
     <string name="currency_image_description">Currency image</string>
+
+    <!--Settings view-->
+    <string name="settings_title">Settings</string>
 </resources>

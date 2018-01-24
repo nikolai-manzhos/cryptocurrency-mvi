@@ -53,7 +53,8 @@ dependencies {
             "com.jakewharton.timber:timber:$timber",
             //Glide
             "com.github.bumptech.glide:glide:$glide",
-            "com.nikolaymanzhos:preferenceshelper:$prefs")
+            "com.nikolaymanzhos:preferenceshelper:$prefs",
+            "com.yarolegovich:mp:$materialPref")
 
     kapt(
             "com.google.dagger:dagger-compiler:$dagger",

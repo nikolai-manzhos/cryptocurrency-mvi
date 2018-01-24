@@ -1,15 +1,14 @@
 package com.defaultapps.cryptocurrency.view.overview
 
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.Toolbar
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import com.bluelinelabs.conductor.RouterTransaction
-import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import com.defaultapps.cryptocurrency.R
 import com.defaultapps.cryptocurrency.view.base.BaseController
-import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewController
-import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewPresenter
+import com.defaultapps.cryptocurrency.view.overview.OverviewContract.*
 import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -22,6 +21,7 @@ import javax.inject.Inject
 
 class OverviewControllerImpl : BaseController<OverviewViewState, OverviewController>(), OverviewController {
 
+    @Inject lateinit var overviewNavigator: OverviewNavigator
     @Inject lateinit var overviewPresenter: OverviewPresenter
     @Inject lateinit var overviewAdapter: OverviewAdapter
 
@@ -33,9 +33,11 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
 
     override fun providePresenter() = overviewPresenter
 
+    override fun provideNavigator() = overviewNavigator
+
     override fun onViewCreated(view: View) {
-        initAdapter(view)
-        initToolbar(view)
+        initAdapter(view.currencyRecycler)
+        initToolbar(view.toolbar)
     }
 
     override fun onDestroyView(view: View) {
@@ -109,15 +111,16 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
         overviewAdapter.setData(viewState.currencyResponseList)
     }
 
-    private fun initAdapter(view: View) {
-        view.currencyRecycler.layoutManager = LinearLayoutManager(applicationContext)
-        view.currencyRecycler.adapter = overviewAdapter
+    private fun initAdapter(currencyRecycler: RecyclerView) {
+        currencyRecycler.layoutManager = LinearLayoutManager(applicationContext)
+        currencyRecycler.adapter = overviewAdapter
     }
 
-    private fun initToolbar(view: View) {
-        view.toolbar.inflateMenu(R.menu.overview_menu)
-        val menu = view.toolbar.menu
+    private fun initToolbar(toolbar: Toolbar) {
+        toolbar.inflateMenu(R.menu.overview_menu)
+        val menu = toolbar.menu
         menu.findItem(R.id.actionSettings).setOnMenuItemClickListener {
+            overviewNavigator.toSettings()
             return@setOnMenuItemClickListener true
         }
     }
