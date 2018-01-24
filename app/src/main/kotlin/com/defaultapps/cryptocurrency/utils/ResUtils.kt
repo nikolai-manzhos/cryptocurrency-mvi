@@ -6,6 +6,7 @@ import android.support.annotation.DrawableRes
 import javax.inject.Inject
 import javax.inject.Singleton
 
+@Suppress("DEPRECATION")
 @Singleton
 class ResUtils @Inject constructor(private val context: Context) {
 
