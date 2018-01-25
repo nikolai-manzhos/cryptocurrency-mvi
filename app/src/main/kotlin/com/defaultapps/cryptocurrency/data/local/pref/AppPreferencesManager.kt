@@ -23,6 +23,7 @@ class AppPreferencesManager @Inject constructor() : DefaultPreferencesManager() 
     fun setOnPreferenceChangeListener(listener: OnPreferenceChange) {
         val preferenceListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key -> listener.onPreferenceChange(key) }
         preferenceListeners[listener.hashCode()] = preferenceListener
+        preferencesHelper.setOnSharedPreferencesChangeListener(preferenceListener)
     }
 
     fun removeOnPreferenceChangeListener(listener: OnPreferenceChange) {

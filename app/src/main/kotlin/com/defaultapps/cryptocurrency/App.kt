@@ -5,7 +5,6 @@ import android.app.Application
 import com.defaultapps.cryptocurrency.injection.component.ApplicationComponent
 import com.defaultapps.cryptocurrency.injection.component.DaggerApplicationComponent
 import com.defaultapps.cryptocurrency.injection.module.ApplicationModule
-import com.defaultapps.cryptocurrency.utils.Constants
 import com.defaultapps.preferenceshelper.PreferencesHelper
 
 @SuppressLint("Registered")
@@ -27,7 +26,6 @@ open class App : Application() {
 
     private fun initPreferencesHelper() {
         PreferencesHelper.builder(this)
-                .setName(Constants.PREF_NAME)
                 .build()
     }
 }

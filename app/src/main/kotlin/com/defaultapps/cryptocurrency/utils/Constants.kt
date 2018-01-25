@@ -8,6 +8,4 @@ object Constants {
     const val CAD_SYMBOL = "C$"
     const val EUR_SYMBOL = "€"
     const val RUB_SYMBOL = "\u20BD"
-
-    const val PREF_NAME = "currency_prefs"
 }

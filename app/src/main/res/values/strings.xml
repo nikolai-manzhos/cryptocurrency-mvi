@@ -13,4 +13,5 @@
 
     <!--Settings view-->
     <string name="settings_title">Settings</string>
+    <string name="settings_currency">Currency</string>
 </resources>
