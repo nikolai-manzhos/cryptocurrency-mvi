@@ -2,6 +2,7 @@ package com.defaultapps.cryptocurrency.view.overview
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.defaultapps.cryptocurrency.R
@@ -16,36 +17,42 @@ import javax.inject.Inject
 class OverviewAdapter @Inject constructor(private val resUtils: ResUtils)
     : RecyclerView.Adapter<CurrencyViewHolder>() {
 
+    companion object {
+        private const val MIN_CHANGE_THRESHOLD = 0F
+    }
+
     private val items = mutableListOf<Currency>()
+    private var listener: CurrencyListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): CurrencyViewHolder {
         val view =  LayoutInflater.from(parent!!.context).inflate(R.layout.item_currency, parent, false)
+        val vh = CurrencyViewHolder(view)
+        vh.itemView.setOnClickListener { listener?.onCurrencyClick() }
         return CurrencyViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: CurrencyViewHolder?, position: Int) {
         val aPosition = holder!!.adapterPosition
         val currency = items[aPosition]
-        Glide
-                .with(holder.itemView)
-                .load(Constants.IMAGE_BASE_URL + currency.id + Constants.IMAGE_FORMAT)
-                .into(holder.itemView.image)
-        holder.itemView.name.text = currency.name
-        holder.itemView.price.text = currency.price
-
-        if (currency.percentChange24 < 0F) {
-            configurePriceChangeView(holder, resUtils.getColor(R.color.red),
-                    R.drawable.ic_trending_down_red_24dp)
+        if (currency.percentChange24 < MIN_CHANGE_THRESHOLD) {
+            val params = CurrencyParams(resUtils.getColor(R.color.red), R.drawable.ic_trending_down_red_24dp)
+            bindPriceChangeView(holder.itemView, params, currency)
         } else {
-            configurePriceChangeView(holder, resUtils.getColor(R.color.green),
-                    R.drawable.ic_trending_up_green_24dp)
+            val params = CurrencyParams(resUtils.getColor(R.color.green), R.drawable.ic_trending_up_green_24dp)
+            bindPriceChangeView(holder.itemView, params, currency)
         }
-        holder.itemView.priceChange.text = currency.percentChange24.toString()
     }
 
-    private fun configurePriceChangeView(holder: CurrencyViewHolder, color: Int, drawableId: Int) {
-        holder.itemView.priceChange.setTextColor(color)
-        holder.itemView.priceChange.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawableId, 0)
+    private fun bindPriceChangeView(itemView: View, params: CurrencyParams, currency: Currency) {
+        Glide
+                .with(itemView)
+                .load(Constants.IMAGE_BASE_URL + currency.id + Constants.IMAGE_FORMAT)
+                .into(itemView.image)
+        itemView.name.text = currency.name
+        itemView.price.text = currency.price
+        itemView.priceChange.setTextColor(params.color)
+        itemView.priceChange.setCompoundDrawablesWithIntrinsicBounds(0, 0, params.drawableId, 0)
+        itemView.priceChange.text = currency.percentChange24.toString()
     }
 
     override fun getItemCount(): Int = items.size
@@ -54,5 +61,15 @@ class OverviewAdapter @Inject constructor(private val resUtils: ResUtils)
         this.items.clear()
         this.items.addAll(items)
         notifyDataSetChanged()
+    }
+
+    fun setCurrencyListener(listener: CurrencyListener) {
+        this.listener = listener
+    }
+
+    class CurrencyParams(val color: Int, val drawableId: Int)
+
+    interface CurrencyListener {
+        fun onCurrencyClick()
     }
 }

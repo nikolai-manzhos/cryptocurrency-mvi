@@ -8,6 +8,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.defaultapps.cryptocurrency.R
 import com.defaultapps.cryptocurrency.view.base.BaseController
+import com.defaultapps.cryptocurrency.view.overview.OverviewAdapter.CurrencyListener
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.*
 import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
@@ -19,7 +20,8 @@ import kotlinx.android.synthetic.main.view_progress.view.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class OverviewControllerImpl : BaseController<OverviewViewState, OverviewController>(), OverviewController {
+class OverviewControllerImpl :
+        BaseController<OverviewViewState, OverviewController>(), OverviewController, CurrencyListener {
 
     @Inject lateinit var overviewNavigator: OverviewNavigator
     @Inject lateinit var overviewPresenter: OverviewPresenter
@@ -58,6 +60,9 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
             is OverviewViewState.DataState -> renderResult(viewState)
             is OverviewViewState.ErrorState -> renderError(viewState)
         }
+    }
+
+    override fun onCurrencyClick() {
     }
 
     private fun renderLoading() {
@@ -113,6 +118,7 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
     private fun initAdapter(currencyRecycler: RecyclerView) {
         currencyRecycler.layoutManager = LinearLayoutManager(applicationContext)
         currencyRecycler.adapter = overviewAdapter
+        overviewAdapter.setCurrencyListener(this)
     }
 
     private fun cleanup(view: View) {
