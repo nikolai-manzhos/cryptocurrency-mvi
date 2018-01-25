@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cryptocurrency</string>
+    <string name="app_name">CryptoBrowser</string>
 
     <!--Overview-->
     <string name="overview_settings">Settings</string>
