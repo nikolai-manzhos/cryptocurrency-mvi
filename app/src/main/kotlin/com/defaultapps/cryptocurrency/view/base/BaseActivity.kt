@@ -21,12 +21,6 @@ abstract class BaseActivity : AppCompatActivity(), ComponentActivity, MviView<Vi
         setContentView(provideLayout())
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (isFinishing || !isChangingConfigurations) {
-        }
-    }
-
     override fun activity(): BaseActivity = this
 
     override fun provideActivityComponent(): ActivityComponent = activityComponent

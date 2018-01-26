@@ -1,6 +1,6 @@
 package com.defaultapps.cryptocurrency.data.local.pref
 
-import android.content.SharedPreferences
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import com.defaultapps.cryptocurrency.data.listener.OnPreferenceChange
 import com.defaultapps.preferenceshelper.DefaultPreferencesManager
 import javax.inject.Inject
@@ -9,7 +9,7 @@ import javax.inject.Singleton
 @Singleton
 class AppPreferencesManager @Inject constructor() : DefaultPreferencesManager() {
 
-    private var preferenceListeners = HashMap<Int, SharedPreferences.OnSharedPreferenceChangeListener>()
+    private var preferenceListeners = HashMap<Int, OnSharedPreferenceChangeListener>()
 
     companion object {
         private const val MONEY_TYPE = "s_money_type"
@@ -21,7 +21,8 @@ class AppPreferencesManager @Inject constructor() : DefaultPreferencesManager() 
     fun getMoneyType(): String = preferencesHelper.getString(MONEY_TYPE, DEFAULT_MONEY_TYPE)
 
     fun setOnPreferenceChangeListener(listener: OnPreferenceChange) {
-        val preferenceListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key -> listener.onPreferenceChange(key) }
+        val preferenceListener =
+                OnSharedPreferenceChangeListener { _, key -> listener.onPreferenceChange(key) }
         preferenceListeners[listener.hashCode()] = preferenceListener
         preferencesHelper.setOnSharedPreferencesChangeListener(preferenceListener)
     }

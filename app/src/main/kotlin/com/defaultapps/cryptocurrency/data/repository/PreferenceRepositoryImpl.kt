@@ -22,5 +22,4 @@ class PreferenceRepositoryImpl
     override fun removeChangeListener(listener: OnPreferenceChange) {
         appPreferencesManager.removeOnPreferenceChangeListener(listener)
     }
-
 }

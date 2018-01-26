@@ -6,6 +6,8 @@ ext {
     androidVersionName = "1.0.0"
     androidBuildTools = "27.0.1"
 
+    detektPlugin = "1.0.0.RC6-2"
+
     kotlinVersion = '1.2.21'
     androidPlugin = '3.0.1'
     jacocoGradle = '0.1.2'

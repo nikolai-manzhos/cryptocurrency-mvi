@@ -11,7 +11,8 @@ import com.bluelinelabs.conductor.Controller
 import com.defaultapps.cryptocurrency.App
 import com.defaultapps.cryptocurrency.injection.component.ScreenComponent
 
-abstract class BaseController<in VS: ViewState, in V: MviView<VS>>(args: Bundle? = null) : Controller(args), MviView<VS> {
+abstract class BaseController<in VS: ViewState, in V: MviView<VS>>(args: Bundle? = null) :
+        Controller(args), MviView<VS> {
 
     private var presenter: MviPresenter<VS, V>? = null
     private var navigator: Navigator<VS, V>? = null

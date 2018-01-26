@@ -15,5 +15,4 @@ abstract class BaseNavigator<in VS: ViewState, V: MviView<VS>> : Navigator<VS, V
     }
 
     protected fun getActivity(): BaseActivity = view!!.activity()
-
 }

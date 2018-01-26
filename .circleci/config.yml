@@ -15,17 +15,20 @@ jobs:
           command: chmod +x gradlew
       - run:
           name: Download Dependencies
-          command: ./gradlew --no-daemon androidDependencies
+          command: ./gradlew androidDependencies
       - save_cache:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
+          name: Static Analysis
+          command: ./gradlew detektCheck
+      - run:
           name: Run tests on Debug
-          command: ./gradlew --no-daemon clean assembleDebug testDebugUnitTest
+          command: ./gradlew clean assembleDebug testDebugUnitTest
       - run:
           name: Run tests on Release
-          command: ./gradlew --no-daemon assembleRelease testReleaseUnitTest lintRelease
+          command: ./gradlew assembleRelease testReleaseUnitTest lintRelease
       - store_artifacts:
           path: app/build/reports
           destination: reports

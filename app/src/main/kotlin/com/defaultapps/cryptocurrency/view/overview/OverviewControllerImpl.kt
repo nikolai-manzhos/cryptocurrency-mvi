@@ -9,7 +9,9 @@ import android.view.View.VISIBLE
 import com.defaultapps.cryptocurrency.R
 import com.defaultapps.cryptocurrency.view.base.BaseController
 import com.defaultapps.cryptocurrency.view.overview.OverviewAdapter.CurrencyListener
-import com.defaultapps.cryptocurrency.view.overview.OverviewContract.*
+import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewPresenter
+import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewController
+import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewNavigator
 import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
