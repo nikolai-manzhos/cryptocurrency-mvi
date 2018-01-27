@@ -4,14 +4,22 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion androidCompileSdk
     defaultConfig {
         applicationId "com.defaultapps.cryptocurrency"
-        minSdkVersion 19
-        targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion androidMinSdk
+        targetSdkVersion androidTargetSdk
+        versionCode androidVersionCode
+        versionName androidVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
 
     sourceSets {
@@ -26,14 +34,15 @@ dependencies {
             "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion",
             "com.android.support:appcompat-v7:$support",
             "com.android.support:design:$support",
+            "com.android.support:cardview-v7:$support",
+            "com.android.support:preference-v7:$support",
             "com.android.support.constraint:constraint-layout:$constraintLayout",
-            //ButterKnife
-            "com.jakewharton:butterknife:$butterKnife",
             //Dagger 2
             "com.google.dagger:dagger:$dagger",
             //RxJava 2
             "io.reactivex.rxjava2:rxandroid:$rxandroid",
             "io.reactivex.rxjava2:rxjava:$rxjava",
+            "com.jakewharton.rxbinding2:rxbinding:$rxbinding",
             "io.reactivex.rxjava2:rxkotlin:$rxkotlin",
             //Retrofit 2
             "com.squareup.retrofit2:retrofit:$retrofit",
@@ -41,11 +50,17 @@ dependencies {
             "com.squareup.retrofit2:adapter-rxjava2:$retrofit",
             "com.squareup.okhttp3:logging-interceptor:$okhttpVersion",
             //Conductor
-            "com.bluelinelabs:conductor:$conductor")
+            "com.bluelinelabs:conductor:$conductor",
+            //Timber
+            "com.jakewharton.timber:timber:$timber",
+            //Glide
+            "com.github.bumptech.glide:glide:$glide",
+            "com.nikolaymanzhos:preferenceshelper:$prefs",
+            "com.yarolegovich:mp:$materialPref")
 
     kapt(
-            "com.jakewharton:butterknife-compiler:$butterKnife",
-            "com.google.dagger:dagger-compiler:$dagger"
+            "com.google.dagger:dagger-compiler:$dagger",
+            "com.github.bumptech.glide:compiler:$glide"
     )
 
     debugImplementation (

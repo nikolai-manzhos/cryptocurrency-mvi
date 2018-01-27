@@ -1,14 +1,14 @@
 package com.defaultapps.cryptocurrency.view.base
 
 import android.os.Bundle
-import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.Conductor
+import com.bluelinelabs.conductor.Router
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 abstract class BaseRouterActivity: BaseActivity() {
 
-    protected lateinit var router: Router
+    lateinit var router: Router
     private set
 
     override fun onCreate(savedInstanceState: Bundle?) {

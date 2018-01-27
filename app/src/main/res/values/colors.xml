@@ -3,4 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!--Black-->
+    <color name="blackPrimary">#de000000</color>
+    <color name="blackSecondary">#8a000000</color>
+    <color name="blackDisabled">#62000000</color>
+    
+    <color name="red">#bf161b</color>
+    <color name="green">#16bf24</color>
 </resources>

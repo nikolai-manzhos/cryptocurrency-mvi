@@ -1,8 +1,8 @@
 package com.defaultapps.cryptocurrency.data.repository
 
-import com.defaultapps.cryptocurrency.data.entity.Currency
-import io.reactivex.Single
+import com.defaultapps.cryptocurrency.domain.model.Currency
+import io.reactivex.Observable
 
 interface NetworkRepository {
-    fun getAllCryptocurrencies(): Single<List<Currency>>
+    fun getAllCryptocurrencies(moneyType: String): Observable<List<Currency>>
 }

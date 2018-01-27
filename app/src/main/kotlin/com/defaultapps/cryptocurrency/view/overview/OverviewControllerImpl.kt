@@ -1,35 +1,60 @@
 package com.defaultapps.cryptocurrency.view.overview
 
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.Toolbar
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import com.defaultapps.cryptocurrency.R
 import com.defaultapps.cryptocurrency.view.base.BaseController
-import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewController
+import com.defaultapps.cryptocurrency.view.overview.OverviewAdapter.CurrencyListener
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewPresenter
+import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewController
+import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewNavigator
+import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.controller_overview.view.*
+import kotlinx.android.synthetic.main.view_error.view.*
 import kotlinx.android.synthetic.main.view_progress.view.*
+import timber.log.Timber
 import javax.inject.Inject
 
-class OverviewControllerImpl : BaseController<OverviewViewState, OverviewController>(), OverviewController {
+class OverviewControllerImpl :
+        BaseController<OverviewViewState, OverviewController>(), OverviewController, CurrencyListener {
 
+    @Inject lateinit var overviewNavigator: OverviewNavigator
     @Inject lateinit var overviewPresenter: OverviewPresenter
-    private val overviewAdapter = OverviewAdapter()
+    @Inject lateinit var overviewAdapter: OverviewAdapter
+
+    private val viewCompositeDisposable = CompositeDisposable()
+
+    override fun inject() = screenComponent.inject(this)
+
+    override fun provideLayout() = R.layout.controller_overview
+
+    override fun providePresenter() = overviewPresenter
+
+    override fun provideNavigator() = overviewNavigator
 
     override fun onViewCreated(view: View) {
-        view.currencyRecycler.layoutManager = LinearLayoutManager(applicationContext)
-        view.currencyRecycler.adapter = overviewAdapter
+        initAdapter(view.currencyRecycler)
+        initToolbar(view.toolbar)
     }
 
     override fun onDestroyView(view: View) {
-        view.currencyRecycler.adapter = null
         super.onDestroyView(view)
+        cleanup(view)
     }
 
-    override fun loadData(): Observable<Boolean> {
-        return Observable.just(true)
-    }
+    override fun retryAction(): Observable<Boolean> =
+            RxView.clicks(safeView!!.errorContainer.errorButton)
+                    .doOnSubscribe { viewCompositeDisposable += it }
+                    .map { true }
+
+    override fun loadData(): Observable<Boolean> = Observable.just(true)
 
     override fun render(viewState: OverviewViewState) {
         when (viewState) {
@@ -39,27 +64,77 @@ class OverviewControllerImpl : BaseController<OverviewViewState, OverviewControl
         }
     }
 
+    override fun onCurrencyClick() {
+    }
+
     private fun renderLoading() {
-        safeView!!.currencyRecycler.visibility = View.GONE
-        safeView!!.loadingContainer.progressBar.visibility = View.VISIBLE
-        Log.d("Overview", "Loading state" )
+        hideContent()
+        hideErrorView()
+        showLoading()
+        Timber.d("Loading state")
     }
 
     private fun renderResult(viewState: OverviewViewState.DataState) {
-        safeView!!.loadingContainer.progressBar.visibility = View.GONE
-        safeView!!.currencyRecycler.visibility = View.VISIBLE
-        overviewAdapter.setData(viewState.currencyList)
-        Log.d("Overview", "Data state" )
+        hideLoading()
+        hideErrorView()
+        showContent()
+        bindContentToView(viewState)
+        Timber.d("Data state")
     }
 
     private fun renderError(viewState: OverviewViewState.ErrorState) {
-        Log.e("Overview", "Error state", viewState.throwable )
+        hideLoading()
+        hideContent()
+        showErrorView()
+        Timber.d(viewState.throwable)
     }
 
-    override fun inject() = screenComponent.inject(this)
+    private fun hideContent() {
+        safeView!!.currencyRecycler.visibility = GONE
+    }
 
-    override fun provideLayout() = R.layout.controller_overview
+    private fun showContent() {
+        safeView!!.currencyRecycler.visibility = VISIBLE
+    }
 
-    override fun providePresenter() = overviewPresenter
+    private fun hideLoading() {
+        safeView!!.progressBar.visibility = GONE
+    }
+
+    private fun showLoading() {
+        safeView!!.progressBar.visibility = VISIBLE
+    }
+
+    private fun hideErrorView() {
+        safeView!!.errorContainer.visibility = GONE
+    }
+
+    private fun showErrorView() {
+        safeView!!.errorContainer.visibility = VISIBLE
+    }
+
+    private fun bindContentToView(viewState: OverviewViewState.DataState) {
+        overviewAdapter.setData(viewState.currencyResponseList)
+    }
+
+    private fun initAdapter(currencyRecycler: RecyclerView) {
+        currencyRecycler.layoutManager = LinearLayoutManager(applicationContext)
+        currencyRecycler.adapter = overviewAdapter
+        overviewAdapter.setCurrencyListener(this)
+    }
+
+    private fun cleanup(view: View) {
+        view.currencyRecycler.adapter = null
+        viewCompositeDisposable.clear()
+    }
+
+    private fun initToolbar(toolbar: Toolbar) {
+        toolbar.inflateMenu(R.menu.overview_menu)
+        val menu = toolbar.menu
+        menu.findItem(R.id.actionSettings).setOnMenuItemClickListener {
+            overviewNavigator.toSettings()
+            return@setOnMenuItemClickListener true
+        }
+    }
 
 }

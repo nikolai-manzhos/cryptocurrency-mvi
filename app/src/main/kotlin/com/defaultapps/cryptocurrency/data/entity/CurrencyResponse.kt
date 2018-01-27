@@ -2,7 +2,7 @@ package com.defaultapps.cryptocurrency.data.entity
 
 import com.google.gson.annotations.SerializedName
 
-class Currency {
+class CurrencyResponse {
     @SerializedName("id")
     var id: String? = null
     @SerializedName("name")
@@ -13,6 +13,12 @@ class Currency {
     var rank: String? = null
     @SerializedName("price_usd")
     var priceUsd: String? = null
+    @SerializedName("price_cad")
+    var priceCad: String? = null
+    @SerializedName("price_eur")
+    var priceEur: String? = null
+    @SerializedName("price_rub")
+    var priceRub: String? = null
     @SerializedName("price_btc")
     var priceBtc: String? = null
     @SerializedName("24h_volume_usd")

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/toolbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/settings_title"
+            app:navigationIcon="@drawable/ic_arrow_back_black_24dp"/>
+    </android.support.design.widget.AppBarLayout>
+
+    <com.yarolegovich.mp.MaterialPreferenceCategory
+        android:id="@+id/backgroundCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <com.yarolegovich.mp.MaterialChoicePreference
+            android:id="@+id/settingsCurrency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mp_key="s_money_type"
+            app:mp_default_value="USD"
+            app:mp_title="@string/settings_currency"
+            app:mp_entry_descriptions="@array/currencies"
+            app:mp_entry_values="@array/currencies"
+            app:mp_show_value="onRight"/>
+    </com.yarolegovich.mp.MaterialPreferenceCategory>
+
+</LinearLayout>

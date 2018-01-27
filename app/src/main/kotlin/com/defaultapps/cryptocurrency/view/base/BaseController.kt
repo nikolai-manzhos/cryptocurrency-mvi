@@ -7,13 +7,12 @@ import android.support.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import butterknife.ButterKnife
-import butterknife.Unbinder
 import com.bluelinelabs.conductor.Controller
-import com.defaultapps.cryptocurrency.DebugApp
+import com.defaultapps.cryptocurrency.App
 import com.defaultapps.cryptocurrency.injection.component.ScreenComponent
 
-abstract class BaseController<in VS: ViewState, in V: MviView<VS>>(args: Bundle? = null) : Controller(args), MviView<VS> {
+abstract class BaseController<in VS: ViewState, in V: MviView<VS>>(args: Bundle? = null) :
+        Controller(args), MviView<VS> {
 
     private var presenter: MviPresenter<VS, V>? = null
     private var navigator: Navigator<VS, V>? = null
@@ -23,12 +22,13 @@ abstract class BaseController<in VS: ViewState, in V: MviView<VS>>(args: Bundle?
     private var isInjected: Boolean = false
 
     protected var safeView: View? = null
+        private set
 
     override fun onContextAvailable(context: Context) {
         if (isInjected) {
             return
         }
-        val app = context.applicationContext as DebugApp
+        val app = context.applicationContext as App
         screenComponent = app.applicationComponent.plusScreenComponent()
         inject()
         presenter = providePresenter()
@@ -50,6 +50,8 @@ abstract class BaseController<in VS: ViewState, in V: MviView<VS>>(args: Bundle?
 
     @CallSuper
     override fun onDestroyView(view: View) {
+        presenter?.onDetach()
+        navigator?.onDetach()
         safeView = null
     }
 
@@ -65,7 +67,9 @@ abstract class BaseController<in VS: ViewState, in V: MviView<VS>>(args: Bundle?
 
     open fun provideNavigator(): Navigator<VS, V>? = null
 
-    override fun provideActivity() = activity as BaseActivity
+    override fun activity() = activity as BaseActivity
+
+    override fun render(viewState: VS) {}
 
     open fun inject() {}
 }

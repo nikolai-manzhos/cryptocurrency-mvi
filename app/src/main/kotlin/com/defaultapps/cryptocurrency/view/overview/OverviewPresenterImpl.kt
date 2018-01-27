@@ -5,6 +5,9 @@ import com.defaultapps.cryptocurrency.injection.scope.PerScreen
 import com.defaultapps.cryptocurrency.view.base.BasePresenter
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewController
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewPresenter
+import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 
@@ -13,10 +16,13 @@ class OverviewPresenterImpl @Inject constructor(private val overviewUseCase: Ove
         BasePresenter<OverviewViewState, OverviewController>(), OverviewPresenter {
 
     override fun bindIntents() {
-        compositeDisposable.add(
-                view!!.loadData()
-                        .flatMap { overviewUseCase.loadAllCryptocurrencies(isAttachedFirstTime) }
-                        .subscribeBy( onNext = {view!!.render(it)})
-        )
+        compositeDisposable += initialLoad(view!!.loadData(), isAttachedFirstTime)
+        compositeDisposable += initialLoad(view!!.retryAction(), true)
+    }
+
+    private fun initialLoad(observable: Observable<Boolean>, force: Boolean): Disposable {
+        return observable
+                .flatMap { overviewUseCase.loadAllCryptocurrencies(force) }
+                .subscribeBy( onNext = {view!!.render(it)})
     }
 }
