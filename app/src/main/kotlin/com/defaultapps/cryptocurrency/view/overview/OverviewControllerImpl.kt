@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.defaultapps.cryptocurrency.R
+import com.defaultapps.cryptocurrency.utils.extensions.toUnit
 import com.defaultapps.cryptocurrency.view.base.BaseController
 import com.defaultapps.cryptocurrency.view.overview.OverviewAdapter.CurrencyListener
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewPresenter
@@ -32,11 +33,8 @@ class OverviewControllerImpl :
     private val viewCompositeDisposable = CompositeDisposable()
 
     override fun inject() = screenComponent.inject(this)
-
     override fun provideLayout() = R.layout.controller_overview
-
     override fun providePresenter() = overviewPresenter
-
     override fun provideNavigator() = overviewNavigator
 
     override fun onViewCreated(view: View) {
@@ -49,18 +47,19 @@ class OverviewControllerImpl :
         cleanup(view)
     }
 
-    override fun retryAction(): Observable<Boolean> =
+    override fun retryAction(): Observable<Unit> =
             RxView.clicks(safeView!!.errorContainer.errorButton)
                     .doOnSubscribe { viewCompositeDisposable += it }
-                    .map { true }
+                    .toUnit()
 
-    override fun loadData(): Observable<Boolean> = Observable.just(true)
+    override fun loadData(): Observable<Unit> =
+            Observable.just(Unit)
 
     override fun render(viewState: OverviewViewState) {
         when (viewState) {
-            is OverviewViewState.LoadingState -> renderLoading()
             is OverviewViewState.DataState -> renderResult(viewState)
             is OverviewViewState.ErrorState -> renderError(viewState)
+            is OverviewViewState.LoadingState -> renderLoading()
         }
     }
 
