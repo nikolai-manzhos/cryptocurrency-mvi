@@ -63,7 +63,8 @@ class OverviewControllerImpl :
         }
     }
 
-    override fun onCurrencyClick() {
+    override fun onCurrencyClick(id: String) {
+        overviewNavigator.toDetail(id)
     }
 
     private fun renderLoading() {

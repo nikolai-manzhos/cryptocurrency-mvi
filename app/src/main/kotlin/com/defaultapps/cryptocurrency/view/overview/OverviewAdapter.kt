@@ -25,10 +25,13 @@ class OverviewAdapter @Inject constructor(private val resUtils: ResUtils)
     private var listener: CurrencyListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): CurrencyViewHolder {
-        val view =  LayoutInflater.from(parent!!.context).inflate(R.layout.item_currency, parent, false)
+        val view = LayoutInflater.from(parent!!.context).inflate(R.layout.item_currency, parent, false)
         val vh = CurrencyViewHolder(view)
-        vh.itemView.setOnClickListener { listener?.onCurrencyClick() }
-        return CurrencyViewHolder(view)
+        vh.itemView.setOnClickListener {
+            val currency = items[vh.adapterPosition]
+            listener?.onCurrencyClick(currency.id)
+        }
+        return vh
     }
 
     override fun onBindViewHolder(holder: CurrencyViewHolder?, position: Int) {
@@ -60,7 +63,7 @@ class OverviewAdapter @Inject constructor(private val resUtils: ResUtils)
     fun setData(items: List<Currency>) {
         this.items.clear()
         this.items.addAll(items)
-        notifyDataSetChanged()
+        notifyItemRangeInserted(0, items.size)
     }
 
     fun setCurrencyListener(listener: CurrencyListener) {
@@ -70,6 +73,6 @@ class OverviewAdapter @Inject constructor(private val resUtils: ResUtils)
     class CurrencyParams(val color: Int, val drawableId: Int)
 
     interface CurrencyListener {
-        fun onCurrencyClick()
+        fun onCurrencyClick(id: String)
     }
 }

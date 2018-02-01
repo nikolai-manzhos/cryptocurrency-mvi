@@ -13,5 +13,6 @@ interface OverviewContract {
     interface OverviewPresenter: MviPresenter<OverviewViewState, OverviewController>
     interface OverviewNavigator: Navigator<OverviewViewState, OverviewController> {
         fun toSettings()
+        fun toDetail(id: String)
     }
 }
