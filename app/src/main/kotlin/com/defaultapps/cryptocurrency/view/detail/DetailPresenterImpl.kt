@@ -9,6 +9,5 @@ class DetailPresenterImpl @Inject constructor() :
         BasePresenter<DetailViewState, DetailContract.DetailController>() {
 
     override fun bindIntents() {
-
     }
 }

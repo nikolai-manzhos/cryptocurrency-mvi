@@ -8,7 +8,7 @@ import io.reactivex.Observable
 interface OverviewContract {
     interface OverviewController: MviView<OverviewViewState> {
         fun retryAction(): Observable<Unit>
-        fun loadData(): Observable<Unit>
+        fun initialLoad(): Observable<Unit>
     }
     interface OverviewPresenter: MviPresenter<OverviewViewState, OverviewController>
     interface OverviewNavigator: Navigator<OverviewViewState, OverviewController> {

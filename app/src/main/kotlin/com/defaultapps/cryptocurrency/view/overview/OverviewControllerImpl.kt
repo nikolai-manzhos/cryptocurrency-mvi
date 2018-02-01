@@ -52,7 +52,7 @@ class OverviewControllerImpl :
                     .doOnSubscribe { viewCompositeDisposable += it }
                     .toUnit()
 
-    override fun loadData(): Observable<Unit> =
+    override fun initialLoad(): Observable<Unit> =
             Observable.just(Unit)
 
     override fun render(viewState: OverviewViewState) {
