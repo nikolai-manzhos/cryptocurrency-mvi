@@ -10,6 +10,7 @@ import com.defaultapps.cryptocurrency.domain.model.Currency
 import com.defaultapps.cryptocurrency.injection.scope.PerScreen
 import com.defaultapps.cryptocurrency.utils.Constants
 import com.defaultapps.cryptocurrency.utils.ResUtils
+import com.defaultapps.cryptocurrency.utils.extensions.loadSimple
 import kotlinx.android.synthetic.main.item_currency.view.*
 import javax.inject.Inject
 
@@ -47,10 +48,8 @@ class OverviewAdapter @Inject constructor(private val resUtils: ResUtils)
     }
 
     private fun bindPriceChangeView(itemView: View, params: CurrencyParams, currency: Currency) {
-        Glide
-                .with(itemView)
-                .load(Constants.IMAGE_BASE_URL + currency.id + Constants.IMAGE_FORMAT)
-                .into(itemView.image)
+        itemView.image
+                .loadSimple(Constants.IMAGE_BASE_URL + currency.id + Constants.IMAGE_FORMAT)
         itemView.name.text = currency.name
         itemView.price.text = currency.price
         itemView.priceChange.setTextColor(params.color)

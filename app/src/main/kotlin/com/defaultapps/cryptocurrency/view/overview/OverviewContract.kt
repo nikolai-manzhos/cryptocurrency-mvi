@@ -6,12 +6,12 @@ import com.defaultapps.cryptocurrency.view.base.Navigator
 import io.reactivex.Observable
 
 interface OverviewContract {
-    interface OverviewController: MviView<OverviewViewState> {
+    interface OverviewController : MviView<OverviewViewState> {
         fun retryAction(): Observable<Unit>
         fun initialLoad(): Observable<Unit>
     }
-    interface OverviewPresenter: MviPresenter<OverviewViewState, OverviewController>
-    interface OverviewNavigator: Navigator<OverviewViewState, OverviewController> {
+    interface OverviewPresenter : MviPresenter<OverviewViewState, OverviewController>
+    interface OverviewNavigator : Navigator<OverviewViewState, OverviewController> {
         fun toSettings()
         fun toDetail(id: String)
     }

@@ -8,7 +8,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.defaultapps.cryptocurrency.R
 import com.defaultapps.cryptocurrency.utils.extensions.toUnit
-import com.defaultapps.cryptocurrency.view.base.BaseController
+import com.defaultapps.cryptocurrency.view.base.BaseLceController
 import com.defaultapps.cryptocurrency.view.overview.OverviewAdapter.CurrencyListener
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewPresenter
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewController
@@ -19,12 +19,11 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.controller_overview.view.*
 import kotlinx.android.synthetic.main.view_error.view.*
-import kotlinx.android.synthetic.main.view_progress.view.*
 import timber.log.Timber
 import javax.inject.Inject
 
 class OverviewControllerImpl :
-        BaseController<OverviewViewState, OverviewController>(), OverviewController, CurrencyListener {
+        BaseLceController<OverviewViewState, OverviewController>(), OverviewController, CurrencyListener {
 
     @Inject lateinit var overviewNavigator: OverviewNavigator
     @Inject lateinit var overviewPresenter: OverviewPresenter
@@ -57,21 +56,10 @@ class OverviewControllerImpl :
 
     override fun render(viewState: OverviewViewState) {
         when (viewState) {
+            OverviewViewState.LoadingState -> renderLoading()
             is OverviewViewState.DataState -> renderResult(viewState)
             is OverviewViewState.ErrorState -> renderError(viewState)
-            is OverviewViewState.LoadingState -> renderLoading()
         }
-    }
-
-    override fun onCurrencyClick(id: String) {
-        overviewNavigator.toDetail(id)
-    }
-
-    private fun renderLoading() {
-        hideContent()
-        hideErrorView()
-        showLoading()
-        Timber.d("Loading state")
     }
 
     private fun renderResult(viewState: OverviewViewState.DataState) {
@@ -89,32 +77,20 @@ class OverviewControllerImpl :
         Timber.d(viewState.throwable)
     }
 
-    private fun hideContent() {
+    override fun hideContent() {
         safeView!!.currencyRecycler.visibility = GONE
     }
 
-    private fun showContent() {
+    override fun showContent() {
         safeView!!.currencyRecycler.visibility = VISIBLE
-    }
-
-    private fun hideLoading() {
-        safeView!!.progressBar.visibility = GONE
-    }
-
-    private fun showLoading() {
-        safeView!!.progressBar.visibility = VISIBLE
-    }
-
-    private fun hideErrorView() {
-        safeView!!.errorContainer.visibility = GONE
-    }
-
-    private fun showErrorView() {
-        safeView!!.errorContainer.visibility = VISIBLE
     }
 
     private fun bindContentToView(viewState: OverviewViewState.DataState) {
         overviewAdapter.setData(viewState.currencyResponseList)
+    }
+
+    override fun onCurrencyClick(id: String) {
+        overviewNavigator.toDetail(id)
     }
 
     private fun initAdapter(currencyRecycler: RecyclerView) {

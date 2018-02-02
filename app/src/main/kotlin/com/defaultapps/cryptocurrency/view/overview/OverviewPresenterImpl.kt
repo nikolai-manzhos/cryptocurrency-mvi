@@ -20,8 +20,8 @@ class OverviewPresenterImpl @Inject constructor(private val overviewUseCase: Ove
         compositeDisposable += initialLoad(view!!.retryAction(), true)
     }
 
-    private fun initialLoad(completable: Observable<Unit>, force: Boolean): Disposable {
-        return completable
+    private fun initialLoad(observable: Observable<Unit>, force: Boolean): Disposable {
+        return observable
                 .switchMap { overviewUseCase.loadAllCryptocurrencies(force) }
                 .subscribeBy( onNext = {view!!.render(it)})
     }

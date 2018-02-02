@@ -6,7 +6,7 @@ import io.reactivex.Observable
 
 interface DetailContract {
     interface DetailController : MviView<DetailViewState> {
-        fun initialLoad(): Observable<Unit>
+        fun initialLoad(): Observable<String>
     }
     interface DetailPresenter : MviPresenter<DetailViewState, DetailController>
 }

@@ -4,6 +4,12 @@
     <!--Overview-->
     <string name="overview_settings">Settings</string>
 
+    <!--Detail-->
+    <string name="detail_title">Detail</string>
+    <string name="detail_hour">1h</string>
+    <string name="detail_day">24h</string>
+    <string name="detail_week">7d</string>
+
     <!--Error view-->
     <string name="error_message">Ooops, something went wrong</string>
     <string name="error_button">Try Again</string>

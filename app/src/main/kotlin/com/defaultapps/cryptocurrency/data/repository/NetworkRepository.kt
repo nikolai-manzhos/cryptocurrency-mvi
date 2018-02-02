@@ -5,4 +5,5 @@ import io.reactivex.Observable
 
 interface NetworkRepository {
     fun getAllCryptocurrencies(moneyType: String): Observable<List<Currency>>
+    fun getCryptocurrencyDetail(id: String): Observable<Currency>
 }

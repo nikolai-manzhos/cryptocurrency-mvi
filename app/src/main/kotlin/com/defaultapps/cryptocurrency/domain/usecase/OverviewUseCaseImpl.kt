@@ -40,7 +40,7 @@ class OverviewUseCaseImpl
                     .doOnSubscribe { compositeDisposable.add(it) }
                     .map { OverviewViewState.DataState(it) }
                     .cast(OverviewViewState::class.java)
-                    .startWith(OverviewViewState.LoadingState())
+                    .startWith(OverviewViewState.LoadingState)
                     .onErrorReturn { OverviewViewState.ErrorState(it) }
                     .subscribeBy(onNext = { overviewBehaviourSubject!!.onNext(it) },
                                  onError = { overviewBehaviourSubject!!.onNext(OverviewViewState.ErrorState(it))})
