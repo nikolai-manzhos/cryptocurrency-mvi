@@ -1,10 +1,12 @@
 package com.defaultapps.cryptocurrency.view.detail
 
 import android.os.Bundle
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.Toolbar
 import android.view.View
 import com.defaultapps.cryptocurrency.R
 import com.defaultapps.cryptocurrency.utils.Constants
+import com.defaultapps.cryptocurrency.utils.ResUtils
 import com.defaultapps.cryptocurrency.utils.extensions.loadSimple
 import com.defaultapps.cryptocurrency.view.base.BaseLceController
 import com.defaultapps.cryptocurrency.view.detail.DetailContract.DetailController
@@ -18,13 +20,21 @@ class DetailControllerImpl(bundle: Bundle) :
         BaseLceController<DetailViewState, DetailController>(bundle), DetailController {
 
     @Inject lateinit var presenter: DetailPresenter
+    @Inject lateinit var resUtils: ResUtils
 
     override fun inject() = screenComponent.inject(this)
     override fun provideLayout(): Int = R.layout.controller_detail
     override fun providePresenter() = presenter
 
     override fun onViewCreated(view: View) {
-        initToolbar(view.detailToolbar);
+        initToolbar(view.detailToolbar)
+
+        val position = args.getInt(Constants.EXTRA_POSITION)
+        ViewCompat.setTransitionName(view.icon,
+                resUtils.getString(R.string.transition_tag_image_indexed, position))
+        ViewCompat.setTransitionName(view.name,
+                resUtils.getString(R.string.transition_tag_name_indexed, position))
+
     }
 
     private fun initToolbar(toolbar: Toolbar) {

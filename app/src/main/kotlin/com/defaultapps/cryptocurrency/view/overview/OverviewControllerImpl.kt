@@ -89,8 +89,8 @@ class OverviewControllerImpl :
         overviewAdapter.setData(viewState.currencyResponseList)
     }
 
-    override fun onCurrencyClick(id: String) {
-        overviewNavigator.toDetail(id)
+    override fun onCurrencyClick(id: String, position: Int) {
+        overviewNavigator.toDetail(id, position)
     }
 
     private fun initAdapter(currencyRecycler: RecyclerView) {
