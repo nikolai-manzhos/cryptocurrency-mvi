@@ -75,6 +75,7 @@ class DetailControllerImpl(bundle: Bundle) :
         val currency = viewState.currency
         val view = safeView!!
         view.name.text = currency.name
+        view.price.text = currency.price
         view.icon.loadSimple(Constants.IMAGE_BASE_URL + currency.id + Constants.IMAGE_FORMAT)
         view.hourChange.text = currency.percentChange1h.toString()
         view.dayChange.text = currency.percentChange24.toString()

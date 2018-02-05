@@ -14,7 +14,7 @@ class NetworkRepositoryImpl @Inject constructor(private val coinApi: CoinApi,
                                                 private val mapper: Mapper) : NetworkRepository {
     
     companion object {
-        const val FIRST = 0
+        const val SINGLE_ITEM = 0
     }
 
     override fun getAllCryptocurrencies(moneyType: String): Observable<List<Currency>> =
@@ -23,9 +23,9 @@ class NetworkRepositoryImpl @Inject constructor(private val coinApi: CoinApi,
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
 
-    override fun getCryptocurrencyDetail(id: String): Observable<Currency> =
-            coinApi.getCurrencyDetail(id)
-                    .map { mapper.currencyResponseToModel(it[FIRST]) }
+    override fun getCryptocurrencyDetail(id: String, moneyType: String): Observable<Currency> =
+            coinApi.getCurrencyDetail(id, moneyType)
+                    .map { mapper.currencyResponseToModel(it[SINGLE_ITEM]) }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
 }

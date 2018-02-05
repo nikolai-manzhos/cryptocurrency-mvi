@@ -24,6 +24,7 @@
 
     <LinearLayout
         android:id="@+id/detailContent"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/appBarLayout"
@@ -37,7 +38,8 @@
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp">
 
                 <TextView
                     android:id="@+id/sevenTitle"
@@ -83,6 +85,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/blackPrimary"
                     android:textSize="24sp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/icon"
                     app:layout_constraintTop_toTopOf="parent"
@@ -126,7 +129,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_marginTop="8dp"
-                    app:layout_constraintDimensionRatio="h,1:1"
                     app:layout_constraintEnd_toEndOf="@+id/dayTitle"
                     app:layout_constraintStart_toStartOf="@+id/dayTitle"
                     app:layout_constraintTop_toBottomOf="@+id/dayTitle"
@@ -140,7 +142,20 @@
                     app:layout_constraintEnd_toEndOf="@+id/sevenTitle"
                     app:layout_constraintStart_toStartOf="@+id/sevenTitle"
                     app:layout_constraintTop_toBottomOf="@+id/sevenTitle"
-                    tools:text="+100" />
+                    tools:text="-100" />
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/exo_2_thin"
+                    android:textColor="@color/blackSecondary"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/icon"
+                    app:layout_constraintTop_toBottomOf="@+id/name"
+                    tools:text="9000 $" />
             </android.support.constraint.ConstraintLayout>
 
         </android.support.v7.widget.CardView>

@@ -1,6 +1,7 @@
 package com.defaultapps.cryptocurrency.domain.usecase
 
 import com.defaultapps.cryptocurrency.data.repository.NetworkRepository
+import com.defaultapps.cryptocurrency.data.repository.PreferenceRepository
 import com.defaultapps.cryptocurrency.domain.base.BaseUseCase
 import com.defaultapps.cryptocurrency.injection.scope.PerScreen
 import com.defaultapps.cryptocurrency.view.detail.DetailViewState
@@ -10,7 +11,9 @@ import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
 @PerScreen
-class DetailUseCaseImpl @Inject constructor(private val networkRepository: NetworkRepository)
+class DetailUseCaseImpl @Inject constructor(
+        private val networkRepository: NetworkRepository,
+        private val preferenceRepository: PreferenceRepository)
     : BaseUseCase(), DetailUseCase {
 
     private var currencyDetailSubject: BehaviorSubject<DetailViewState>? = null
@@ -23,7 +26,7 @@ class DetailUseCaseImpl @Inject constructor(private val networkRepository: Netwo
         if (currencyDetailSubject == null) {
             currencyDetailSubject = BehaviorSubject.create()
 
-            networkRepository.getCryptocurrencyDetail(id)
+            networkRepository.getCryptocurrencyDetail(id, preferenceRepository.getMoneyType().toString())
                     .doOnSubscribe { compositeDisposable.add(it) }
                     .map { DetailViewState.DataState(it) }
                     .cast(DetailViewState::class.java)

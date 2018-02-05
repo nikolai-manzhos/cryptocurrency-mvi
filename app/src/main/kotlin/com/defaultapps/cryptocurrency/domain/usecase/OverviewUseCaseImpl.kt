@@ -36,7 +36,7 @@ class OverviewUseCaseImpl
         if (overviewBehaviourSubject == null) {
             overviewBehaviourSubject = BehaviorSubject.create()
 
-            networkRepository.getAllCryptocurrencies(preferenceRepository.getMoneyType().name)
+            networkRepository.getAllCryptocurrencies(preferenceRepository.getMoneyType().toString())
                     .doOnSubscribe { compositeDisposable.add(it) }
                     .map { OverviewViewState.DataState(it) }
                     .cast(OverviewViewState::class.java)

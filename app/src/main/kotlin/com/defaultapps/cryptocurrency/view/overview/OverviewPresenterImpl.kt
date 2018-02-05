@@ -16,13 +16,14 @@ class OverviewPresenterImpl @Inject constructor(private val overviewUseCase: Ove
         BasePresenter<OverviewViewState, OverviewController>(), OverviewPresenter {
 
     override fun bindIntents() {
-        compositeDisposable += initialLoad(view!!.initialLoad(), isAttachedFirstTime)
-        compositeDisposable += initialLoad(view!!.retryAction(), true)
+        compositeDisposable += Observable.merge(
+                initialLoad(view!!.initialLoad(), isAttachedFirstTime),
+                initialLoad(view!!.retryAction(), true))
+                .subscribeBy( onNext = {view!!.render(it)})
     }
 
-    private fun initialLoad(observable: Observable<Unit>, force: Boolean): Disposable {
+    private fun initialLoad(observable: Observable<Unit>, force: Boolean): Observable<OverviewViewState> {
         return observable
                 .switchMap { overviewUseCase.loadAllCryptocurrencies(force) }
-                .subscribeBy( onNext = {view!!.render(it)})
     }
 }

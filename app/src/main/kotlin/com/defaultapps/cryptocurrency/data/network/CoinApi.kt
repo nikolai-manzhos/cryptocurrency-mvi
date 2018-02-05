@@ -12,5 +12,5 @@ interface CoinApi {
     fun getCurrencies(@Query("convert") moneyType: String): Observable<List<CurrencyResponse>>
 
     @GET("ticker/{id}/")
-    fun getCurrencyDetail(@Path("id") id: String): Observable<List<CurrencyResponse>>
+    fun getCurrencyDetail(@Path("id") id: String, @Query("convert") moneyType: String): Observable<List<CurrencyResponse>>
 }
