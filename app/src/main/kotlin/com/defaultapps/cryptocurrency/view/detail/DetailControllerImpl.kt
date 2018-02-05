@@ -8,7 +8,8 @@ import com.defaultapps.cryptocurrency.R
 import com.defaultapps.cryptocurrency.utils.Constants
 import com.defaultapps.cryptocurrency.utils.ResUtils
 import com.defaultapps.cryptocurrency.utils.extensions.loadSimple
-import com.defaultapps.cryptocurrency.view.base.BaseLceController
+import com.defaultapps.cryptocurrency.view.base.BaseController
+import com.defaultapps.cryptocurrency.view.base.LoadingErrorDelegate
 import com.defaultapps.cryptocurrency.view.detail.DetailContract.DetailController
 import com.defaultapps.cryptocurrency.view.detail.DetailContract.DetailPresenter
 import io.reactivex.Observable
@@ -17,10 +18,12 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class DetailControllerImpl(bundle: Bundle) :
-        BaseLceController<DetailViewState, DetailController>(bundle), DetailController {
+        BaseController<DetailViewState, DetailController>(bundle), DetailController {
 
     @Inject lateinit var presenter: DetailPresenter
     @Inject lateinit var resUtils: ResUtils
+
+    private var viewDelegate: LoadingErrorDelegate? = null
 
     override fun inject() = screenComponent.inject(this)
     override fun provideLayout(): Int = R.layout.controller_detail
@@ -28,18 +31,8 @@ class DetailControllerImpl(bundle: Bundle) :
 
     override fun onViewCreated(view: View) {
         initToolbar(view.detailToolbar)
-
-        val position = args.getInt(Constants.EXTRA_POSITION)
-        ViewCompat.setTransitionName(view.icon,
-                resUtils.getString(R.string.transition_tag_image_indexed, position))
-        ViewCompat.setTransitionName(view.name,
-                resUtils.getString(R.string.transition_tag_name_indexed, position))
-
-    }
-
-    private fun initToolbar(toolbar: Toolbar) {
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp)
-        toolbar.setNavigationOnClickListener { router.popCurrentController() }
+        initViewDelegate(view)
+        initTransitionAnimation(view)
     }
 
     override fun initialLoad(): Observable<String> =
@@ -53,25 +46,28 @@ class DetailControllerImpl(bundle: Bundle) :
         }
     }
 
-    private fun renderError(viewState: DetailViewState.ErrorState) {
-        hideLoading()
+    private fun renderLoading() {
+        viewDelegate?.renderLoading()
         hideContent()
-        showErrorView()
+    }
+
+    private fun renderError(viewState: DetailViewState.ErrorState) {
+        viewDelegate?.renderError()
+        hideContent()
         Timber.d(viewState.throwable)
     }
 
     private fun renderResult(viewState: DetailViewState.DataState) {
-        hideLoading()
-        hideErrorView()
+        viewDelegate?.renderResult()
         showContent()
         bindContentToView(viewState)
     }
 
-    override fun hideContent() {
+    private fun hideContent() {
         safeView!!.detailContent.visibility = View.GONE
     }
 
-    override fun showContent() {
+    private fun showContent() {
         safeView!!.detailContent.visibility = View.VISIBLE
     }
 
@@ -83,6 +79,23 @@ class DetailControllerImpl(bundle: Bundle) :
         view.hourChange.text = currency.percentChange1h.toString()
         view.dayChange.text = currency.percentChange24.toString()
         view.weekChange.text = currency.percentChange7d.toString()
+    }
+
+    private fun initTransitionAnimation(view: View) {
+        val position = args.getInt(Constants.EXTRA_POSITION)
+        ViewCompat.setTransitionName(view.icon,
+                resUtils.getString(R.string.transition_tag_image_indexed, position))
+        ViewCompat.setTransitionName(view.name,
+                resUtils.getString(R.string.transition_tag_name_indexed, position))
+    }
+
+    private fun initViewDelegate(view: View) {
+        viewDelegate = LoadingErrorDelegate(view)
+    }
+
+    private fun initToolbar(toolbar: Toolbar) {
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp)
+        toolbar.setNavigationOnClickListener { router.popCurrentController() }
     }
 
 }

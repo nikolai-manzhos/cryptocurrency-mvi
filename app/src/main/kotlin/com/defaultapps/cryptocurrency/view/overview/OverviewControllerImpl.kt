@@ -8,7 +8,8 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.defaultapps.cryptocurrency.R
 import com.defaultapps.cryptocurrency.utils.extensions.toUnit
-import com.defaultapps.cryptocurrency.view.base.BaseLceController
+import com.defaultapps.cryptocurrency.view.base.BaseController
+import com.defaultapps.cryptocurrency.view.base.LoadingErrorDelegate
 import com.defaultapps.cryptocurrency.view.overview.OverviewAdapter.CurrencyListener
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewPresenter
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewController
@@ -23,13 +24,14 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class OverviewControllerImpl :
-        BaseLceController<OverviewViewState, OverviewController>(), OverviewController, CurrencyListener {
+        BaseController<OverviewViewState, OverviewController>(), OverviewController, CurrencyListener {
 
     @Inject lateinit var overviewNavigator: OverviewNavigator
     @Inject lateinit var overviewPresenter: OverviewPresenter
     @Inject lateinit var overviewAdapter: OverviewAdapter
 
     private val viewCompositeDisposable = CompositeDisposable()
+    private var viewDelegate: LoadingErrorDelegate? = null
 
     override fun inject() = screenComponent.inject(this)
     override fun provideLayout() = R.layout.controller_overview
@@ -39,6 +41,7 @@ class OverviewControllerImpl :
     override fun onViewCreated(view: View) {
         initAdapter(view.currencyRecycler)
         initToolbar(view.toolbar)
+        initViewDelegate(view)
     }
 
     override fun onDestroyView(view: View) {
@@ -62,26 +65,29 @@ class OverviewControllerImpl :
         }
     }
 
+    private fun renderLoading() {
+        viewDelegate?.renderLoading()
+        hideContent()
+        Timber.d("Loading state")
+    }
+
     private fun renderResult(viewState: OverviewViewState.DataState) {
-        hideLoading()
-        hideErrorView()
+        viewDelegate?.renderResult()
         showContent()
         bindContentToView(viewState)
         Timber.d("Data state")
     }
 
     private fun renderError(viewState: OverviewViewState.ErrorState) {
-        hideLoading()
-        hideContent()
-        showErrorView()
+        viewDelegate?.renderError()
         Timber.d(viewState.throwable)
     }
 
-    override fun hideContent() {
+    private fun hideContent() {
         safeView!!.currencyRecycler.visibility = GONE
     }
 
-    override fun showContent() {
+    private fun showContent() {
         safeView!!.currencyRecycler.visibility = VISIBLE
     }
 
@@ -102,6 +108,7 @@ class OverviewControllerImpl :
     private fun cleanup(view: View) {
         view.currencyRecycler.adapter = null
         viewCompositeDisposable.clear()
+        viewDelegate = null
     }
 
     private fun initToolbar(toolbar: Toolbar) {
@@ -113,4 +120,7 @@ class OverviewControllerImpl :
         }
     }
 
+    private fun initViewDelegate(view: View) {
+        viewDelegate = LoadingErrorDelegate(view)
+    }
 }
