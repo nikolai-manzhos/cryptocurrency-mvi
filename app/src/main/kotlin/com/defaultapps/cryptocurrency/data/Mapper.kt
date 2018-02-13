@@ -20,8 +20,8 @@ class Mapper @Inject constructor(private val preferenceRepository: PreferenceRep
         return Currency(currencyResponse.id!!,
                 currencyResponse.name!!,
                 price,
-                currencyResponse.percentChange24h!!.toFloat(),
-                currencyResponse.percentChange24h!!.toFloat(),
-                currencyResponse.percentChange7d!!.toFloat())
+                currencyResponse.percentChange24h?.toFloat() ?: Float.NaN,
+                currencyResponse.percentChange24h?.toFloat() ?: Float.NaN,
+                currencyResponse.percentChange7d?.toFloat() ?: Float.NaN)
     }
 }
