@@ -4,6 +4,12 @@
     <!--Overview-->
     <string name="overview_settings">Settings</string>
 
+    <!--Detail-->
+    <string name="detail_title">Detail</string>
+    <string name="detail_hour">1h</string>
+    <string name="detail_day">24h</string>
+    <string name="detail_week">7d</string>
+
     <!--Error view-->
     <string name="error_message">Ooops, something went wrong</string>
     <string name="error_button">Try Again</string>
@@ -14,4 +20,10 @@
     <!--Settings view-->
     <string name="settings_title">Settings</string>
     <string name="settings_currency">Currency</string>
+
+    <!--Transitions -->
+    <string name="transition_tag_image_indexed">transition.icon%1$d</string>
+    <string name="transition_tag_name_indexed">transition.name%1$d</string>
+    <string name="transition_tag_image">transition.icon%1$s</string>
+    <string name="transition_tag_title">transition.title%1$s</string>
 </resources>

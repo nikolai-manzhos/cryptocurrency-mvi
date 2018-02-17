@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 abstract class BaseRouterActivity: BaseActivity() {
 
     lateinit var router: Router
-    private set
+        private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -7,7 +7,9 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.defaultapps.cryptocurrency.R
+import com.defaultapps.cryptocurrency.utils.extensions.toUnit
 import com.defaultapps.cryptocurrency.view.base.BaseController
+import com.defaultapps.cryptocurrency.view.base.LoadingErrorDelegate
 import com.defaultapps.cryptocurrency.view.overview.OverviewAdapter.CurrencyListener
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewPresenter
 import com.defaultapps.cryptocurrency.view.overview.OverviewContract.OverviewController
@@ -18,7 +20,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.controller_overview.view.*
 import kotlinx.android.synthetic.main.view_error.view.*
-import kotlinx.android.synthetic.main.view_progress.view.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -30,18 +31,17 @@ class OverviewControllerImpl :
     @Inject lateinit var overviewAdapter: OverviewAdapter
 
     private val viewCompositeDisposable = CompositeDisposable()
+    private var viewDelegate: LoadingErrorDelegate? = null
 
     override fun inject() = screenComponent.inject(this)
-
     override fun provideLayout() = R.layout.controller_overview
-
     override fun providePresenter() = overviewPresenter
-
     override fun provideNavigator() = overviewNavigator
 
     override fun onViewCreated(view: View) {
         initAdapter(view.currencyRecycler)
         initToolbar(view.toolbar)
+        initViewDelegate(view)
     }
 
     override fun onDestroyView(view: View) {
@@ -49,43 +49,37 @@ class OverviewControllerImpl :
         cleanup(view)
     }
 
-    override fun retryAction(): Observable<Boolean> =
+    override fun retryAction(): Observable<Unit> =
             RxView.clicks(safeView!!.errorContainer.errorButton)
                     .doOnSubscribe { viewCompositeDisposable += it }
-                    .map { true }
+                    .toUnit()
 
-    override fun loadData(): Observable<Boolean> = Observable.just(true)
+    override fun initialLoad(): Observable<Unit> =
+            Observable.just(Unit)
 
     override fun render(viewState: OverviewViewState) {
         when (viewState) {
-            is OverviewViewState.LoadingState -> renderLoading()
+            OverviewViewState.LoadingState -> renderLoading()
             is OverviewViewState.DataState -> renderResult(viewState)
             is OverviewViewState.ErrorState -> renderError(viewState)
         }
     }
 
-    override fun onCurrencyClick() {
-    }
-
     private fun renderLoading() {
+        viewDelegate?.renderLoading()
         hideContent()
-        hideErrorView()
-        showLoading()
         Timber.d("Loading state")
     }
 
     private fun renderResult(viewState: OverviewViewState.DataState) {
-        hideLoading()
-        hideErrorView()
+        viewDelegate?.renderResult()
         showContent()
         bindContentToView(viewState)
         Timber.d("Data state")
     }
 
     private fun renderError(viewState: OverviewViewState.ErrorState) {
-        hideLoading()
-        hideContent()
-        showErrorView()
+        viewDelegate?.renderError()
         Timber.d(viewState.throwable)
     }
 
@@ -97,24 +91,12 @@ class OverviewControllerImpl :
         safeView!!.currencyRecycler.visibility = VISIBLE
     }
 
-    private fun hideLoading() {
-        safeView!!.progressBar.visibility = GONE
-    }
-
-    private fun showLoading() {
-        safeView!!.progressBar.visibility = VISIBLE
-    }
-
-    private fun hideErrorView() {
-        safeView!!.errorContainer.visibility = GONE
-    }
-
-    private fun showErrorView() {
-        safeView!!.errorContainer.visibility = VISIBLE
-    }
-
     private fun bindContentToView(viewState: OverviewViewState.DataState) {
         overviewAdapter.setData(viewState.currencyResponseList)
+    }
+
+    override fun onCurrencyClick(id: String, position: Int) {
+        overviewNavigator.toDetail(id, position)
     }
 
     private fun initAdapter(currencyRecycler: RecyclerView) {
@@ -126,6 +108,7 @@ class OverviewControllerImpl :
     private fun cleanup(view: View) {
         view.currencyRecycler.adapter = null
         viewCompositeDisposable.clear()
+        viewDelegate = null
     }
 
     private fun initToolbar(toolbar: Toolbar) {
@@ -137,4 +120,7 @@ class OverviewControllerImpl :
         }
     }
 
+    private fun initViewDelegate(view: View) {
+        viewDelegate = LoadingErrorDelegate(view)
+    }
 }

@@ -12,11 +12,20 @@ import javax.inject.Singleton
 @Singleton
 class NetworkRepositoryImpl @Inject constructor(private val coinApi: CoinApi,
                                                 private val mapper: Mapper) : NetworkRepository {
+    
+    companion object {
+        const val SINGLE_ITEM = 0
+    }
 
     override fun getAllCryptocurrencies(moneyType: String): Observable<List<Currency>> =
             coinApi.getCurrencies(moneyType)
                     .map { it.map { mapper.currencyResponseToModel(it) } }
-                    .toObservable()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+
+    override fun getCryptocurrencyDetail(id: String, moneyType: String): Observable<Currency> =
+            coinApi.getCurrencyDetail(id, moneyType)
+                    .map { mapper.currencyResponseToModel(it[SINGLE_ITEM]) }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
 }

@@ -1,6 +1,9 @@
 package com.defaultapps.cryptocurrency.utils
 
 object Constants {
+    const val EXTRA_CONTENT = "intent_extra_content"
+    const val EXTRA_POSITION = "intent_extra_position";
+
     const val IMAGE_BASE_URL = "https://files.coinmarketcap.com/static/img/coins/128x128/"
     const val IMAGE_FORMAT = ".png"
 

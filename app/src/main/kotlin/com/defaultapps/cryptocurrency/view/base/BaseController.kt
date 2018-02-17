@@ -40,9 +40,9 @@ abstract class BaseController<in VS: ViewState, in V: MviView<VS>>(args: Bundle?
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val view = inflater.inflate(provideLayout(), container, false)
         safeView = view
+        onViewCreated(view)
         presenter?.onAttach(this as V)
         navigator?.onAttach(this as V)
-        onViewCreated(view)
         return view
     }
 

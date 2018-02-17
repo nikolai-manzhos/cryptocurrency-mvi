@@ -36,11 +36,11 @@ class OverviewUseCaseImpl
         if (overviewBehaviourSubject == null) {
             overviewBehaviourSubject = BehaviorSubject.create()
 
-            networkRepository.getAllCryptocurrencies(preferenceRepository.getMoneyType().name)
+            networkRepository.getAllCryptocurrencies(preferenceRepository.getMoneyType().toString())
                     .doOnSubscribe { compositeDisposable.add(it) }
                     .map { OverviewViewState.DataState(it) }
                     .cast(OverviewViewState::class.java)
-                    .startWith(OverviewViewState.LoadingState())
+                    .startWith(OverviewViewState.LoadingState)
                     .onErrorReturn { OverviewViewState.ErrorState(it) }
                     .subscribeBy(onNext = { overviewBehaviourSubject!!.onNext(it) },
                                  onError = { overviewBehaviourSubject!!.onNext(OverviewViewState.ErrorState(it))})
