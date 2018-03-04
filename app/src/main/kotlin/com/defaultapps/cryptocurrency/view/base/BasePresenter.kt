@@ -4,24 +4,21 @@ import android.support.annotation.CallSuper
 import com.defaultapps.cryptocurrency.domain.base.UseCase
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BasePresenter<in VS: ViewState, V: MviView<VS>>
+abstract class BasePresenter<in VS: ViewState, in V: MviView<VS>>
         (private vararg val useCases: UseCase = emptyArray()): MviPresenter<VS, V> {
 
-    protected var view: V? = null
     protected val compositeDisposable = CompositeDisposable()
     protected var isAttachedFirstTime = true
 
     @CallSuper
     override fun onAttach(view: V) {
-        this.view = view
-        bindIntents()
+        bindIntents(view)
         if (isAttachedFirstTime) isAttachedFirstTime = false
     }
 
     @CallSuper
     override fun onDetach() {
         compositeDisposable.clear()
-        view = null
     }
 
     override fun disposeUseCaseCalls() {
@@ -30,5 +27,5 @@ abstract class BasePresenter<in VS: ViewState, V: MviView<VS>>
         }
     }
 
-    abstract fun bindIntents()
+    abstract fun bindIntents(view: V)
 }

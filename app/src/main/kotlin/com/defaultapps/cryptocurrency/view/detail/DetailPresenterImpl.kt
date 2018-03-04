@@ -12,9 +12,9 @@ import javax.inject.Inject
 class DetailPresenterImpl @Inject constructor(private val detailUseCase: DetailUseCase) :
         BasePresenter<DetailViewState, DetailContract.DetailController>(), DetailPresenter {
 
-    override fun bindIntents() {
-        compositeDisposable += view!!.initialLoad()
+    override fun bindIntents(view: DetailContract.DetailController) {
+        compositeDisposable += view.initialLoad()
                 .switchMap { detailUseCase.loadCurrencyDetail(isAttachedFirstTime, it) }
-                .subscribeBy( onNext = { view!!.render(it) })
+                .subscribeBy( onNext = { view.render(it) })
     }
 }
