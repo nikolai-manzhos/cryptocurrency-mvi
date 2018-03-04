@@ -15,11 +15,11 @@ import javax.inject.Inject
 class OverviewPresenterImpl @Inject constructor(private val overviewUseCase: OverviewUseCase) :
         BasePresenter<OverviewViewState, OverviewController>(), OverviewPresenter {
 
-    override fun bindIntents() {
+    override fun bindIntents(view: OverviewController) {
         compositeDisposable += Observable.merge(
-                initialLoad(view!!.initialLoad(), isAttachedFirstTime),
-                initialLoad(view!!.retryAction(), true))
-                .subscribeBy( onNext = {view!!.render(it)})
+                initialLoad(view.initialLoad(), isAttachedFirstTime),
+                initialLoad(view.retryAction(), true))
+                .subscribeBy( onNext = {view.render(it)})
     }
 
     private fun initialLoad(observable: Observable<Unit>, force: Boolean): Observable<OverviewViewState> {
