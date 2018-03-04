@@ -8,6 +8,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.defaultapps.cryptocurrency.R
 import com.defaultapps.cryptocurrency.utils.extensions.toUnit
+import com.defaultapps.cryptocurrency.utils.extensions.exhaustive
 import com.defaultapps.cryptocurrency.view.base.BaseController
 import com.defaultapps.cryptocurrency.view.base.LoadingErrorDelegate
 import com.defaultapps.cryptocurrency.view.overview.OverviewAdapter.CurrencyListener
@@ -62,7 +63,7 @@ class OverviewControllerImpl :
             OverviewViewState.LoadingState -> renderLoading()
             is OverviewViewState.DataState -> renderResult(viewState)
             is OverviewViewState.ErrorState -> renderError(viewState)
-        }
+        }.exhaustive
     }
 
     private fun renderLoading() {

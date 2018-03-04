@@ -7,6 +7,7 @@ import android.view.View
 import com.defaultapps.cryptocurrency.R
 import com.defaultapps.cryptocurrency.utils.Constants
 import com.defaultapps.cryptocurrency.utils.ResUtils
+import com.defaultapps.cryptocurrency.utils.extensions.exhaustive
 import com.defaultapps.cryptocurrency.utils.extensions.loadSimple
 import com.defaultapps.cryptocurrency.view.base.BaseController
 import com.defaultapps.cryptocurrency.view.base.LoadingErrorDelegate
@@ -43,7 +44,7 @@ class DetailControllerImpl(bundle: Bundle) :
             DetailViewState.LoadingState -> renderLoading()
             is DetailViewState.DataState -> renderResult(viewState)
             is DetailViewState.ErrorState -> renderError(viewState)
-        }
+        }.exhaustive
     }
 
     private fun renderLoading() {
